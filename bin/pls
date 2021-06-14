@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from rfslib import arg_parser, arg_processor
+from _rfstools import arg_parser, arg_processor
 
 
 def get_instance():

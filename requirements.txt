@@ -1,2 +1,2 @@
 ConfigArgParse==1.4.1
-git+ssh://git@git.profinit.eu/rfs/rfslib@0.1.0#egg=rfslib
+git+ssh://git@git.profinit.eu/rfs/rfslib@0.1.1.1#egg=rfslib

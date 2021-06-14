@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-from rfslib import sftp_pconnection, arg_parser, arg_processor, path_utils
+from rfslib import sftp_pconnection, path_utils
+from _rfstools import arg_parser, arg_processor
 
 import logging
 

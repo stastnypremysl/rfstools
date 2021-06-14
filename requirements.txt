@@ -1,3 +1,2 @@
-pysmb==1.2.7
-pysftp==0.2.9 
 ConfigArgParse==1.4.1
+git+ssh://git@git.profinit.eu/rfs/rfslib@0.1.0#egg=rfslib

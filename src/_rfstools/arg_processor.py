@@ -117,6 +117,9 @@ def init(arg_parser, name):
 
   if 'prepend_dirname' in args:
     ret.prepend_dirname = args['prepend_dirname']
+
+  if 'make_parents' in args:
+    ret.make_parents = args['make_parents']
   
   glob = pglobber.PGlobber(ret.connection).glob
   

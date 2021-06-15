@@ -4,7 +4,7 @@ import logging
 
 def get_instance():
   p = arg_parser.one_arg_parser(description='This command list a given remote folder, or returns a file name, if it is not a folder.')
-  p.add('-p', '--make-parents', action='store_true', help='Makes parents if needed.')
+  p.add('-p', '--make-parents', action='store_true', help='Makes parents if needed.', default=False)
   return arg_processor.init(p, "pls")
 
 try:

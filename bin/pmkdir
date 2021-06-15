@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from _rfstools import arg_parser, arg_processor
-
+import logging
 
 def get_instance():
   p = arg_parser.one_arg_parser(description='This command list a given remote folder, or returns a file name, if it is not a folder.')

@@ -25,6 +25,9 @@ def default_arg_parser(description=''):
   ret.add('-D', '--debug-mode', help='Enables debug mode. Implies verbose mode.', action='store_true', env_var='RFSTOOLS_DEBUG')
   ret.add('-L', '--log-file', help='Redirect all log messages to a file.', env_var='RFSTOOLS_LOG_FILE')
 
+  ret.add('--no-strict-host-key-checking', env_var='RFSTOOLS_NO_STRICT_HOST_KEY_CHECKING', action='store_true', default=False,
+          help='Disables strict host SSH key knowledge requirements policy. Be aware, that using this option makes you volnerable to MITM attack. Applicable only for SFTP.')
+
   return ret
 
 def oneplus_arg_parser(description=''):

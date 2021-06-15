@@ -1,6 +1,6 @@
 # rfstools
 Remote file system tools for data manipulation between remote /and local host/ (cp, mv, ls, rm,..) written in Python3. 
-This package provides you executables pcp, pls, pmv,..., which enables you to do painless data operation on remote/between remote and local host using SFTP/FTP/FTPS/SMB/FS(local file system) protocols.
+This package provides you executables pcp, pls, pmv,..., which enables you to do painless data operations on remote/between remote and local host using SFTP/FTP/FTPS/SMB/FS(local file system) protocols.
 
 Furthermore you can enable data reencoding during data transfer (CRLF/LF and character reencoding). 
 

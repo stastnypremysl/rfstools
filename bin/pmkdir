@@ -4,7 +4,7 @@ from _rfstools import arg_parser, arg_processor
 
 def get_instance():
   p = arg_parser.one_arg_parser(description='This command list a given remote folder, or returns a file name, if it is not a folder.')
-  p.add('-p', '--prepend-dirname', action='store_true', help='Enables prepending dirnames to the output.')
+  p.add('-p', '--make-parents', action='store_true', help='Makes parents if needed.')
   return arg_processor.init(p, "pls")
 
 try:
@@ -12,14 +12,10 @@ try:
     if ic.file.remote == False:
       raise ValueError("A given file must be remote.")
 
-    ls = None
-    if ic.prepend_dirname:
-      ls = ic.connection.xls(ic.file.path)
+    if ic.make_parents:
+      ic.connection.pmkdir(ic.file.path)
     else:
-      ls = ic.connection.ls(ic.file.path)
-
-    for name in ls:
-      print(name)
+      ic.connection.mkdir(ic.file.path)
 
 except Exception: 
   logging.exception("Fatal error. (returning 1)")

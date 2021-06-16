@@ -120,6 +120,8 @@ def init(arg_parser, name):
 
   if 'make_parents' in args:
     ret.make_parents = args['make_parents']
+
+  ret.no_strict_host_key_checking = args['no_strict_host_key_checking']
   
   glob = pglobber.PGlobber(ret.connection).glob
   

@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
   long_description = fh.read()
 
   setuptools.setup(name='rfstools',
-    version='0.3.1',
+    version='0.3.2',
     description='Remote file system tools for data manipulation between remote /and local host/ (cp, mv, ls, rm,..)',
     long_description=long_description,
     author='Přemysl Šťastný',
@@ -16,7 +16,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     package_dir={"": "src"},
     packages=['_rfstools'],
     install_requires=[
-      'rfslib>=0.3.0,<1',
+      'rfslib>=0.3.2,<1',
       'ConfigArgParse>=1.4.1,<2'
     ],
     scripts=[*map(lambda x: 'bin/' + x, os.listdir('bin'))],

@@ -21,37 +21,7 @@ Be sure, that your pip installation folder/bin is correctly in your PATH envirom
 For example, if you are on Debian and you are not installing under root, you have `~/.local/bin` in $PATH.
 If it is not present, you will not able to call `rfstools` from command line.
 
-If you are required during the installation to connect git.profinit.eu, we strongly recommend you have your user ssh keys generated
-and uploaded to Gitlab. (You can do it in https://git.profinit.eu/-/profile/keys )
-
-### From source code - nonstrict dependencies
-If you want to install this package without strict package dependencies or you just want to develop it, this aproach should be good for you.
-
-In this approach you have to install these private dependencies manually: https://git.profinit.eu/rfs/rfslib
-
-After that download the repository (if you want a concrete version, you have to change the address to it), cd it:
-
-    git clone https://git.profinit.eu/rfs/rfstools
-    cd rfstools
-
-and install it by using pip3 or ./setup.py
-
-    pip install .
-
-### From source code - strict dependencies
-This tool is tested on a given version of dependencies and you might consider to use them strictly because you are guaranted, that they passed the CI/CD tests.
-
-In this approach you don't have to install private dependencies manually, but you have to have git and access to git repository.
-
-Analogically as in section before, we need to download it and cd it:
-
-    git clone https://git.profinit.eu/rfs/rfstools
-    cd rfstools
-
-and install it using pip
-
-    pip install . -r requirements.txt
-
+TODO
 
 ### From wheel
 TODO

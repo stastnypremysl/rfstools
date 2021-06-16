@@ -38,10 +38,6 @@ Finally, install the package using `pip`
 
     pip install rfstools
 
-### From wheel
-TODO
-### From wheelhouse
-TODO
 
 ## Configuration
 TODO

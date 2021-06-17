@@ -77,13 +77,7 @@ deploy-doc:
     - |
       export doc_repo=/tmp/rfstools-docs
 
-      if [ -n "${CI_DOCS_ACCESS_TOKEN}" ]; then
-        echo "Access token is missing"
-        exit 1
-      fi
-
       pushd /tmp
-      echo git clone https://oauth2:${CI_DOCS_ACCESS_TOKEN}@git.profinit.eu/rfs/rfstools-docs/
       git clone https://oauth2:${CI_DOCS_ACCESS_TOKEN}@git.profinit.eu/rfs/rfstools-docs/
       popd
 

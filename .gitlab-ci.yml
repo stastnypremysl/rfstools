@@ -90,6 +90,10 @@ deploy-doc:
       cp -r doc/* $doc_repo
 
       cd $doc_repo
+      
+      git config --global user.email "$GITLAB_USER_EMAIL"
+      git config --global user.name "$GITLAB_USER_NAME"
+
       git add -A
       git commit -m "$CI_COMMIT_MESSAGE"
 

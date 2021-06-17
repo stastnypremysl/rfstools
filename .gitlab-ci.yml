@@ -67,6 +67,29 @@ deploy:
     - pip install twine
     - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url https://git.profinit.eu/api/v4/projects/${CI_PROJECT_ID}/packages/pypi dist/*
 
+deploy-doc:
+  stage: deploy
+  enviroment: deploy
+  script:
+    - pwd   
+ 
+    - mkdir ~/doc
+    - pushd ~/doc
+    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@git.profinit.eu/rfs/rfstools
+    - rm -fr ./generated 2>/dev/null || :
+    - mkdir generated
+    - popd
+
+    - ./generate-docs.sh
+    - cp -r doc/* ~/doc/generated
+
+    - cd ~/doc
+    - [ -n "$CI_COMMIT_TAG" ] && git tag "$CI_COMMIT_TAG"
+  artifacts:
+    paths:
+      - ~/doc
+      
+
 # pages:
  # stage: build
  # script:

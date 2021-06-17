@@ -1,7 +1,7 @@
 from rfslib import pglobber, pinstance, path_utils
 import logging
 
-import os
+import os, sys
 
 import re
 
@@ -42,7 +42,7 @@ def init(arg_parser, name):
 
   logging.basicConfig(format='%(asctime)s; {}; {}; %(message)s'.format(name, os.getpid()), level=log_level)
 
-  logging.info("rfstools startup...")
+  logging.info("Starting rfstools version {}".format(sys.version))
   logging.info( __anonymize_formatted_values(p.format_values()) )
    
   logging.debug("Starting stage 1. (connection initialization)")

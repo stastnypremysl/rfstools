@@ -4,6 +4,7 @@ from os import environ
 
 import sys
 
+
 def default_arg_parser(description=''):
   ret = configargparse.ArgParser(description=description, default_config_files=['/etc/rfstools.conf', '~/.rfstools.conf'])
   ret.add('-c', '--config-file', is_config_file=True, help='Configuration file path.', env_var='RFSTOOLS_CONFIG')

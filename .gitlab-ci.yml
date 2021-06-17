@@ -1,7 +1,7 @@
 stages:
-- run
+- build
 - test
-- pages
+- deploy
 
 # Official language image. Look for the different tagged releases at:
 # https://hub.docker.com/r/library/python/tags/
@@ -24,36 +24,58 @@ cache:
 
 before_script:
   - python -V  # Print out python version for debugging
+
   - pip install virtualenv
   - virtualenv venv
   - source venv/bin/activate
 
-test:
-  script:
-    - python setup.py test
-    - pip install tox flake8  # you can also use tox
-    - tox -e py36,flake8
+  - pip install -U pip
 
-run:
-  stage: run
+  - mkdir -p ~/.pip
+  - |
+    cat > ~/.pip/pip.conf <<EOF
+    [global]
+    extra-index-url = https://rfstools-worker:${CI_RFSTOOLS_WORKER_TOKEN}>@git.profinit.eu/api/v4/projects/551/packages/pypi/simple 
+      https://rfstools-worker:${CI_RFSTOOLS_WORKER_TOKEN}@git.profinit.eu/api/v4/projects/552/packages/pypi/simple
+
+    EOF
+
+# test:
+#  script:
+#    - python setup.py test
+#    - pip install tox flake8  # you can also use tox
+#    - tox -e py36,flake8
+
+build:
+  stage: build
   script:
-    - python setup.py bdist_wheel
+    - python setup.py sdist bdist_wheel
     # an alternative approach is to install and run:
-    - pip install dist/*
+    - pip install dist/*.tar.gz
     # run the command here
   artifacts:
     paths:
       - dist/*.whl
+      - dist/*.tar.gz
 
-pages:
-  stage: pages
-  script:
-    - pip install sphinx sphinx-rtd-theme
-    - cd doc ; make html
-    - mv build/html/ ../public/
-  artifacts:
-    paths:
-      - public
+deploy:
+  stage: deploy
+  environment: deploy
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_TAG
+  script:
+    - pip install twine
+    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url https://git.profinit.eu/api/v4/projects/${CI_PROJECT_ID}/packages/pypi dist/*
+
+# pages:
+ # stage: build
+ # script:
+ #   - pip install sphinx sphinx-rtd-theme
+ #   - cd doc ; make html
+ #   - mv build/html/ ../public/
+ # artifacts:
+ #   paths:
+ #     - public
+ # rules:
+ #   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 

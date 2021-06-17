@@ -75,15 +75,15 @@ deploy-doc:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - |
-      doc_repo=/tmp/rfstools-docs
+      export doc_repo=/tmp/rfstools-docs
 
-      if [ -n "${CI_RFSTOOLS_DOCS_ACCESS_TOKEN}" ]; then
+      if [ -n "${DOCS_ACCESS_TOKEN}" ]; then
         echo "Access token is missing"
         exit 1
       fi
 
       pushd /tmp
-      git clone https://oauth2:${CI_RFSTOOLS_DOCS_ACCESS_TOKEN}@git.profinit.eu/rfs/rfstools-docs
+      git clone https://oauth2:${DOCS_ACCESS_TOKEN}@git.profinit.eu/rfs/rfstools-docs/
       popd
 
       pushd $doc_repo

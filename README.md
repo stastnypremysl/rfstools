@@ -15,7 +15,7 @@ We recommend, that you upgrade your pip version before doing any further step.
     pip3 install -U pip
 
     # If there is no pip3
-    pip install -U pip3       
+    pip install -U pip
 
 Be sure, that your `pip` installation folder/bin is correctly in your `PATH` enviroment variable. 
 For example, if you are on Debian and you are not installing under root, you have `~/.local/bin` in $PATH.

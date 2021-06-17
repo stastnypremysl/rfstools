@@ -90,6 +90,9 @@ deploy-doc:
       cp -r doc/* $doc_repo
 
       cd $doc_repo
+      git add -A
+      git commit -m "$CI_COMMIT_MESSAGE"
+
       [ -n "$CI_COMMIT_TAG" ] && git tag "$CI_COMMIT_TAG"
 
       git push

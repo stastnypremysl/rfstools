@@ -12,6 +12,7 @@ with open("README.md", "r", encoding="utf-8") as freadme, open("version.txt", "r
     description='Remote file system tools for data manipulation between remote /and local host/ (cp, mv, ls, rm,..)',
     long_description=long_description,
     long_description_content_type="text/markdown",
+    include_package_data=True,
     author='Přemysl Šťastný',
     author_email='p-w@stty.cz',
     url='https://git.profinit.eu/pstastny/rfstools',

@@ -10,4 +10,6 @@ fi
 git add -A
 git commit -m "new version $new_version"
 git tag $(cat ./version.txt)
+
+git push
 git push --tags

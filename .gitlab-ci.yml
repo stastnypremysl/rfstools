@@ -83,6 +83,7 @@ deploy-doc:
       fi
 
       pushd /tmp
+      echo git clone https://oauth2:${DOCS_ACCESS_TOKEN}@git.profinit.eu/rfs/rfstools-docs/
       git clone https://oauth2:${DOCS_ACCESS_TOKEN}@git.profinit.eu/rfs/rfstools-docs/
       popd
 

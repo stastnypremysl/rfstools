@@ -81,6 +81,11 @@ deploy-doc:
       mkdir $doc_repo
       pushd $doc_repo
 
+      if [ -n "${CI_RFSTOOLS_DOCS_ACCESS_TOKEN}" ]; then
+        echo "Access token is missing"
+        exit 1
+      fi
+
       git clone https://oauth2:${CI_RFSTOOLS_DOCS_ACCESS_TOKEN}@git.profinit.eu/rfs/rfstools-docs
       rm -fr ./generated 2>/dev/null || :
       mkdir generated

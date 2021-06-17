@@ -95,7 +95,7 @@ deploy-doc:
       git config --global user.name "$GITLAB_USER_NAME"
 
       git add -A
-      git commit -m "$CI_COMMIT_MESSAGE"
+      git commit -m "$CI_COMMIT_MESSAGE" || :
 
       [ -n "$CI_COMMIT_TAG" ] && git tag "$CI_COMMIT_TAG"
 

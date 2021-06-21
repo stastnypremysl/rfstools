@@ -1,0 +1,9 @@
+pyparsing
+ConfigArgParse
+paramiko
+pysmb
+rfslib
+Sphinx
+sphinxcontrib-napoleon
+twine
+sphinx-markdown-builder

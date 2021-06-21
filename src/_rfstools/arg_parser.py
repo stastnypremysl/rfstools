@@ -5,7 +5,17 @@ from os import environ
 import sys
 
 
-def default_arg_parser(description=''):
+def default_arg_parser(description:str='') -> configargparse.ArgParser:
+  """A function, which is called in the beginning of all scripts in `bin`. 
+     It generates a base parser sceleton, which is later altered by script itself.
+
+     Args:
+       description: The script description. Basically what the script do.
+
+     Returns:
+       A base parser sceleton. 
+  """
+
   ret = configargparse.ArgParser(description=description, default_config_files=['/etc/rfstools.conf', '~/.rfstools.conf'])
   ret.add('-c', '--config-file', is_config_file=True, help='Configuration file path.', env_var='RFSTOOLS_CONFIG')
 

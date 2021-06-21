@@ -1,3 +1,6 @@
+#!/bin/bash
+set -e
+export RFSTOOLS_DEBUG=TRUE
 
 generate_file()(
   tmp=$(mktemp)
@@ -19,7 +22,7 @@ print_test_succeeded(){
   test=NAN
 }
 
-cp_test(){
+cp_test()(
   test=cp_test
   print_test_start
   
@@ -33,11 +36,93 @@ cp_test(){
     pcp $l1_file r:$l2_file
     pcp r:$l2_file $l3_file
      
-    diff $l1_file $l2_file    
+    diff $l1_file $l2_file || (
+      echo Copied files differ.
+      exit 1
+    ) 
  
   ) || print_test_fail
   print_test_succeeded
     
-}
+)
+
+ls_test()(
+  test=ls_test
+  print_test_start
+  
+  (
+    l1_file=$(generate_file)
+    l2_file=$l1_file.transmit
+
+    trap "rm $l1_file" EXIT
+    
+    pcp $l1_file r:$l2_file
+    
+    if ! ( pls -p r:/tmp | grep -F $l2_file ); then
+      echo "pls r:/tmp doesn't contain new added file"
+      exit 1    
+    fi
+ 
+  ) || print_test_fail
+  print_test_succeeded
+)
+
+mv_test()(
+  test=mv_test
+  print_test_start
+  
+  (
+    l1_file=$(generate_file)
+    l1_file_dup=$l1_file.dup
+    cp $l1_file $l1_file_dup
+    trap "rm $l1_file_dup" EXIT
+        
+    l2_file=$l1_file.transmit
+    l3_file=$l1_file.done
+
+    pmv $l1_file r:$l2_file
+    pmv r:$l2_file $l3_file
+
+    diff $l1_file $l2_file || (
+      echo Moved files differ.
+      exit 1
+    )
+
+    if [ -e $l1_file ] || (pls -p r:/tmp | grep -F $l2_file >/dev/null); then
+      echo Moved file exist.
+      exit 1
+    fi
+
+    exit 0
+ 
+  ) || print_test_fail
+  print_test_succeeded
+    
+)
+
+rm_test()(
+  test=tm_test
+  print_test_start
+  
+  (
+    l1_file=$(generate_file)
+    l2_file=$l1_file.transmit
+
+    trap "rm $l1_file" EXIT
+    
+    pcp $l1_file r:$l2_file
+    prm r:$l2_file
+    
+    if ( pls -p r:/tmp | grep -F $(l2_file) ); then
+      echo "pls r:/tmp contain deleted file"
+      exit 1    
+    fi
+ 
+  ) || print_test_fail
+  print_test_succeeded
+)
 
 cp_test
+ls_test
+mv_test
+rm_test

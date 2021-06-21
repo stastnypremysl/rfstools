@@ -45,6 +45,12 @@ default:
 
       EOF
 
+test-tox:
+  stage: test
+  script: 
+    - pip install tox
+    - tox
+
 test-fs:
   stage: test
   script:

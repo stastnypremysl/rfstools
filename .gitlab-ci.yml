@@ -87,7 +87,7 @@ deploy-doc:
       popd
 
       ./generate-docs.sh
-      cp -r doc/* $doc_repo
+      cp -r docs/build/commands $doc_repo
 
       cd $doc_repo
       

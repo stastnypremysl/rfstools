@@ -1,5 +1,8 @@
 #!/bin/bash
-mkdir -p doc/commands
+cd $(dirname $0)/..
+
+c_output=./docs/_build/commands
+mkdir -p $c_output
 
 pip install virtualenv
 virtualenv .venv-doc
@@ -11,5 +14,5 @@ pip install -U pip
 pip install .
 
 for cmd in $(ls bin); do
-  $cmd -h > doc/commands/$cmd.txt
+  $cmd -h > $c_output/$cmd.txt
 done

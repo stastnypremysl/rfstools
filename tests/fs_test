@@ -1,0 +1,3 @@
+#!/bin/bash
+export RFSTOOLS_CONNECTION_TYPE=FS
+. tests/generic_tests.bash

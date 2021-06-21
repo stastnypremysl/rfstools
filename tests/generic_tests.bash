@@ -25,11 +25,19 @@ cp_test(){
   
   (
     l1_file=$(generate_file)
-    trap "rm $l1_file" EXIT
-
     l2_file=$l1_file.transmit
+    l3_file=$l1_file.transmit_done
+
+    trap "rm $l1_file $l3_file" EXIT
+    
+    pcp $l1_file r:$l2_file
+    pcp r:$l2_file $l3_file
+     
+    diff $l1_file $l2_file    
  
   ) || print_test_fail
   print_test_succeeded
     
 }
+
+cp_test

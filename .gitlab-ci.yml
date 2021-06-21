@@ -45,11 +45,35 @@ default:
 
       EOF
 
-# test:
-#  script:
-#    - python setup.py test
-#    - pip install tox flake8  # you can also use tox
-#    - tox -e py36,flake8
+test-fs:
+  stage: test
+  script:
+    - export RFSTOOLS_CONNECTION_TYPE=FS
+    - ./tests/generic-tests
+
+test-sftp:
+  stage: test
+  script:
+    - apt install openssh-server
+  
+test-smb:
+  stage: test
+  script:
+    - apt install samba
+    - mkdir /samba
+    - cat $SMB_CONFIG > /etc/samba/smb.conf
+    - systemctl start nmbd
+
+test-ftp:
+  stage: test
+  script:
+    - apt install vsftpd
+
+test-ftps:
+  stage: test
+  script:
+    - apt install vsftpd
+    
 
 build:
   stage: build
@@ -80,7 +104,7 @@ deploy-doc:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - |
-      apt install -y texlive-latex-recommended latexmk
+      apt install -y texlive-latex-recommended latexmk texlive-fonts-recommended texlive-latex-extra
 
       export doc_repo=/tmp/rfstools-docs
 

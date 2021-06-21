@@ -80,7 +80,7 @@ deploy-doc:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - |
-      apt install -y texlive-full
+      apt install -y texlive-latex-recommended
 
       export doc_repo=/tmp/rfstools-docs
 

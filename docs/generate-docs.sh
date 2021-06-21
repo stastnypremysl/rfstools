@@ -1,18 +1,27 @@
 #!/bin/bash
-cd $(dirname $0)/..
 
-c_output=./docs/_build/commands
-mkdir -p $c_output
+venv=$(mktemp -d)
 
 pip install virtualenv
-virtualenv .venv-doc
-trap "rm -rf .venv-doc" EXIT
+virtualenv $venv
+trap "rm -rf $venv" EXIT
 
-source .venv-doc/bin/activate
+source $venv/bin/activate
 
 pip install -U pip
-pip install .
+pip install -r ../requirements.txt
+pip install ..
 
-for cmd in $(ls bin); do
-  $cmd -h > $c_output/$cmd.txt
-done
+(
+  c_output=./docs/_build/commands
+  mkdir -p $c_output
+
+
+  for cmd in $(ls bin); do (
+    $cmd -h > $c_output/$cmd.txt
+  ) done
+)
+(
+  make latexpdf
+)
+

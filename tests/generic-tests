@@ -33,13 +33,13 @@ cp_test()(
 
     trap "rm $l1_file $l3_file" EXIT
     
-    pcp $l1_file r:$l2_file
-    pcp r:$l2_file $l3_file
+    pcp $l1_file r:$l2_file || exit 1
+    pcp r:$l2_file $l3_file || exit 1
      
-    diff $l1_file $l2_file || (
+    diff $l1_file $l2_file || {
       echo Copied files differ.
       exit 1
-    ) 
+    }
  
   ) || print_test_fail
   print_test_succeeded
@@ -56,7 +56,7 @@ ls_test()(
 
     trap "rm $l1_file" EXIT
     
-    pcp $l1_file r:$l2_file
+    pcp $l1_file r:$l2_file || exit 1
     
     if ! ( pls -p r:/tmp | grep -F $l2_file ); then
       echo "pls r:/tmp doesn't contain new added file"
@@ -80,16 +80,21 @@ mv_test()(
     l2_file=$l1_file.transmit
     l3_file=$l1_file.done
 
-    pmv $l1_file r:$l2_file
-    pmv r:$l2_file $l3_file
+    pmv $l1_file r:$l2_file || exit 1
+    pmv r:$l2_file $l3_file || exit 1
 
-    diff $l1_file $l2_file || (
+    diff $l1_file_dup $l3_file || {
       echo Moved files differ.
       exit 1
-    )
+    }
 
-    if [ -e $l1_file ] || (pls -p r:/tmp | grep -F $l2_file >/dev/null); then
-      echo Moved file exist.
+    if [ -e $l1_file ]; then
+      echo Local moved file exist.
+      exit 1
+    fi
+
+    if (pls -p r:/tmp | grep -F $l2_file >/dev/null); then
+      echo Remote moved file exist.
       exit 1
     fi
 
@@ -110,8 +115,8 @@ rm_test()(
 
     trap "rm $l1_file" EXIT
     
-    pcp $l1_file r:$l2_file
-    prm r:$l2_file
+    pcp $l1_file r:$l2_file || exit 1
+    prm r:$l2_file || exit 1
     
     if ( pls -p r:/tmp | grep -F $(l2_file) ); then
       echo "pls r:/tmp contain deleted file"

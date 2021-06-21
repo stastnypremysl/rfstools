@@ -86,9 +86,9 @@ test-smb:
 
     - apt install -y samba
     - mkdir -p /samba/tmp
-    - cat $SMB_CONFIG > /etc/samba/smb.conf
-    - smbd -D
-    - nmbd -D
+    - cat < $SMB_CONFIG > /etc/samba/smb.conf
+    - smbd -D || :
+    - nmbd -D || :
 
     - export RFSTOOLS_CONNECTION_TYPE=SMB
     - export RFSTOOLS_HOST=127.0.0.1

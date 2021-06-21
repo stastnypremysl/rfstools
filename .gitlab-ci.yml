@@ -86,14 +86,17 @@ test-smb:
 
     - apt install -y samba
     - mkdir -p /samba/tmp
-    - cat $SMB_CONFIG > /etc/samba/smb.conf
-    - smbd -D
-    - nmbd -D
+    - cat < $SMB_CONFIG > /etc/samba/smb.conf
+    - >
+      smbd -D || :
+    - >
+      nmbd -D || :
 
     - export RFSTOOLS_CONNECTION_TYPE=SMB
     - export RFSTOOLS_HOST=127.0.0.1
     - export RFSTOOLS_USERNAME=testing
     - export RFSTOOLS_PASSWORD=testing
+    - export RFSTOOLS_SERVICE_NAME=samba-share
 
     - ./tests/generic-tests
 

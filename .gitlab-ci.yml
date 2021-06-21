@@ -48,31 +48,64 @@ default:
 test-fs:
   stage: test
   script:
+    - pip install .
+
     - export RFSTOOLS_CONNECTION_TYPE=FS
     - ./tests/generic-tests
 
 test-sftp:
   stage: test
   script:
-    - apt install openssh-server
+    - pip install .
+
+    - apt install -y openssh-server
+    - ssh-keygen -f ~/.ssh/id_rsa -N ''
+    - cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+    - chmod og-wx ~/.ssh/authorized_keys
+
+    - mkdir -p /run/sshd
+    - /usr/sbin/sshd
+    - export RFSTOOLS_CONNECTION_TYPE=SFTP
+    - export RFSTOOLS_HOST=localhost
+    - export RFSTOOLS_USERNAME=root
+    - export RFSTOOLS_NO_HOST_KEY_CHECKING=TRUE
+
+    - ./tests/generic-tests
+
   
 test-smb:
   stage: test
   script:
-    - apt install samba
-    - mkdir /samba
+    - pip install .
+
+    - apt install -y samba
+    - mkdir -p /samba/tmp
     - cat $SMB_CONFIG > /etc/samba/smb.conf
-    - systemctl start nmbd
+    - smbd -D
+    - nmbd -D
+
+    - export RFSTOOLS_CONNECTION_TYPE=SMB
+    - export RFSTOOLS_HOST=127.0.0.1
+    - export RFSTOOLS_USERNAME=testing
+    - export RFSTOOLS_PASSWORD=testing
+
+    - ./tests/generic-tests
+
+
 
 test-ftp:
   stage: test
   script:
-    - apt install vsftpd
+    - pip install .
+
+    - apt install -y vsftpd
 
 test-ftps:
   stage: test
   script:
-    - apt install vsftpd
+    - pip install .
+    
+    - apt install -y vsftpd
     
 
 build:

@@ -80,7 +80,7 @@ deploy-doc:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - |
-      apt install -y texlive-latex-recommended
+      apt install -y texlive-latex-recommended latexmk
 
       export doc_repo=/tmp/rfstools-docs
 
@@ -95,6 +95,7 @@ deploy-doc:
       ./docs/generate-docs.sh
       cp -r docs/_build/commands $doc_repo
       cp docs/_build/latex/rfstools.pdf $doc_repo/rfstools-dev-doc.pdf
+      cp docs/_build/README.md $doc_repo
 
       cd $doc_repo
       

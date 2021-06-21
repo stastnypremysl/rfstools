@@ -27,7 +27,7 @@ def default_arg_parser(description:str='') -> configargparse.ArgParser:
   ret.add('-H', '--host', help='The address of server.', env_var='RFSTOOLS_HOST')
   ret.add('-P', '--port', help='The port for a connection to the file storage. Defaults to RFC standard port.', env_var='RFSTOOLS_PORT', type=int)
   ret.add('-T', '--connection-type', help='A connection type to the file storage. (SMB/SFTP/FTP/FS/FTPS)', env_var='RFSTOOLS_CONNECTION_TYPE', required=True)
-  ret.add('-S', '--service-name', help='Contains a name of shared folder. Applicable only for SMB.', env_var='RFSTOOLS_SHARED_FOLDER')
+  ret.add('-S', '--service-name', help='Contains a name of shared folder. Applicable only for SMB.', env_var='RFSTOOLS_SERVICE_NAME')
 
   ret.add('-Z', '--remote-prefix', help='Contains a prefix, which will be prepended to all remote addresses.', env_var='RFSTOOLS_REMOTE_PREFIX', default='')
   ret.add('-x', '--transaction', help='Specifies the name of transaction in which the command should be executed. Not implemented yet.', env_var='RFSTOOLS_TRANSACTION')

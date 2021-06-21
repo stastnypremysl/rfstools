@@ -5,7 +5,7 @@ stages:
 
 # Official language image. Look for the different tagged releases at:
 # https://hub.docker.com/r/library/python/tags/
-image: python:latest
+image: debian:stable
 
 # Change pip's cache directory to be inside the project directory since we can
 # only cache local items.
@@ -24,11 +24,15 @@ cache:
 
 default:
   before_script:
-    - python -V  # Print out python version for debugging
+    - apt update -y
+    - apt dist-upgrade -y
+    - apt install -y python3-pip git
 
-    - pip install virtualenv
-    - virtualenv venv
-    - source venv/bin/activate
+    - pip3 install --user -U virtualenv pip
+    - export PATH=~/.local/bin:$PATH
+    
+    - virtualenv ~/venv
+    - source ~/venv/bin/activate
 
     - pip install -U pip
 
@@ -76,6 +80,8 @@ deploy-doc:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - |
+      apt install -y texlive-full
+
       export doc_repo=/tmp/rfstools-docs
 
       pushd /tmp
@@ -83,11 +89,12 @@ deploy-doc:
       popd
 
       pushd $doc_repo
-      rm -fr ./commands 2>/dev/null || :
+      rm -fr ./commands ./rfstools-dev-doc.pdf 2>/dev/null || :
       popd
 
-      ./generate-docs.sh
-      cp -r docs/build/commands $doc_repo
+      ./docs/generate-docs.sh
+      cp -r docs/_build/commands $doc_repo
+      cp docs/_build/latex/rfstools.pdf $doc_repo/rfstools-dev-doc.pdf
 
       cd $doc_repo
       

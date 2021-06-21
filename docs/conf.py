@@ -19,7 +19,7 @@ import os
 
 # The full version, including alpha/beta/rc tags
 
-with open("version.txt", "r") as fversion:
+with open("../version.txt", "r") as fversion:
   release = fversion.read().splitlines()[0]
   
 
@@ -34,7 +34,8 @@ author = 'Přemysl Šťastný'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [ 'sphinx_markdown_builder'
+extensions = [ 'sphinx_markdown_builder',
+'sphinx.ext.napoleon',
 ]
 
 # Add any paths that contain templates here, relative to this directory.

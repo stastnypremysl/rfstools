@@ -87,6 +87,7 @@ test-smb:
     - apt install -y samba
     - mkdir -p /samba/tmp
     - cat < $SMB_CONFIG > /etc/samba/smb.conf
+    - cat /etc/samba/smb.conf
     - >
       smbd -D || :
     - >

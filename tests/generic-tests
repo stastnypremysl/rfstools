@@ -83,7 +83,7 @@ mv_test()(
     pmv $l1_file r:$l2_file
     pmv r:$l2_file $l3_file
 
-    diff $l1_file $l2_file || (
+    diff $l1_file_dup $l2_file || (
       echo Moved files differ.
       exit 1
     )

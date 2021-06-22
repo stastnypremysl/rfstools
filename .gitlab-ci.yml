@@ -88,11 +88,12 @@ test-smb:
     - mkdir -p /samba/tmp
     - chmod 1777 /samba/tmp
     - cat < $SMB_CONFIG > /etc/samba/smb.conf
-    - cat /etc/samba/smb.conf
-    - >
-      smbd -D || :
-    - >
-      nmbd -D || :
+    - testparm /etc/samba/smb.conf
+    - smbd -D
+    - nmbd -D
+    - sleep 10
+    
+    - smbstatus
 
     - export RFSTOOLS_CONNECTION_TYPE=SMB
     - export RFSTOOLS_HOST=127.0.0.1

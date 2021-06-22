@@ -151,10 +151,11 @@ rm_test()(
   print_test_succeeded
 )
 
-touch_test
-exist_test
-
 cp_test
 ls_test
 mv_test
 rm_test
+
+touch_test
+exist_test
+

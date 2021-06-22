@@ -170,7 +170,7 @@ def init(arg_parser, name):
     ret.source_files = process_paths(args['source_files'])
 
   if 'files' in args:
-    ret.source_files = process_paths(args['files'])
+    ret.files = process_paths(args['files'])
 
   if 'target_file' in args:
     ret.destination_file = process_single_path(args['target_file'])

@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+from _rfstools import arg_parser, arg_processor
+import logging
+
+
+def get_instance():
+  p = arg_parser.oneplus_arg_parser(description='This command unlinks nonfolder files. If recursivity enabled, it deletes whole trees.')
+  p.add('-r', '--recursive', action='store_true', help='Enables recursive removing.')
+  return arg_processor.init(p, "prm")
+
+try:
+  with get_instance() as ic:
+
+    for f in ic.files:
+      if f.remote == False:
+        raise ValueError("A given file must be remote.")
+
+      ic.connection.rm(f.path, recursive=ic.recursive)
+
+except Exception: 
+  logging.exception("Fatal error. (returning 1)")
+  exit(1)
+ 
+logging.info("Finished succesfully. (returning 0)")
+exit(0)

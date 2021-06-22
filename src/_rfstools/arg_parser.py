@@ -30,7 +30,7 @@ def default_arg_parser(description:str='') -> configargparse.ArgParser:
           env_var='RFSTOOLS_CONNECTION_TYPE', required=True)
 
   ret.add('-S', '--service-name', help='Contains a name of shared folder. Applicable only for SMB12/SMB23.', env_var='RFSTOOLS_SERVICE_NAME')
-  ret.add('--client-name', help='Overrides a default RFSTOOLS client name. Applicable only for SMB12/SMB23.', env_var='RFSTOOLS_CLIENT_NAME', default='RFSTOOLS')
+  ret.add('--client-name', help='Overrides a default RFSTOOLS client name. Applicable only for SMB12.', env_var='RFSTOOLS_CLIENT_NAME', default='RFSTOOLS')
 
   ret.add('--use-ntlm-v1', help='Enables deprecated ntlm-v1 authentication. Applicable only for SMB12.', action='store_true', env_var="RFSTOOLS_USE_NTLM_V1")
   ret.add('--use-direct-tcp', help='Enables newer direct TCP connection over NetBIOS connection. Applicable only for SMB12. (don\'t forget to change port to 445)', 

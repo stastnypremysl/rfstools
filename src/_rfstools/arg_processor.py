@@ -90,6 +90,8 @@ def init(arg_parser, name):
 
     check_arg_existence('service_name')
     default_nonexistent_arg('port', 445)
+
+    smb23_pconnection.config_smb23(**args)
     ret.connection = smb23_pconnection.Smb23PConnection(**args)
 
   elif c_type == "FTP":

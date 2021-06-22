@@ -23,10 +23,6 @@ def __anonymize_formatted_values(values):
   return "".join(ret)
     
 
-class PathArg():
-  def __init__(self, path, remote):
-    self.remote = remote
-
 def init(arg_parser, name):
   p = arg_parser
 
@@ -80,13 +76,21 @@ def init(arg_parser, name):
     default_nonexistent_arg('port', 22)
     ret.connection = sftp_pconnection.SftpPConnection(**args)
 
-  elif c_type == "SMB":
-    logging.debug("Initiating SMB connection.")
-    from rfslib import smb_pconnection
+  elif c_type == "SMB12":
+    logging.debug("Initiating SMB12 connection.")
+    from rfslib import smb12_pconnection
 
     check_arg_existence('service_name')
     default_nonexistent_arg('port', 139)
-    ret.connection = smb_pconnection.SmbPConnection(**args)
+    ret.connection = smb12_pconnection.Smb12PConnection(**args)
+
+  elif c_type == "SMB23":
+    logging.debug("Initiating SMB23 connection.")
+    from rfslib import smb23_pconnection
+
+    check_arg_existence('service_name')
+    default_nonexistent_arg('port', 445)
+    ret.connection = smb23_pconnection.Smb23PConnection(**args)
 
   elif c_type == "FTP":
     logging.debug("Initiating FTP connection.")
@@ -109,17 +113,16 @@ def init(arg_parser, name):
 
   logging.debug("Starting stage 2. (path processing)")
 
-  if 'recursive' in args:
-    ret.recursive = args['recursive']
+  def pass_variable(var_name):
+    if var_name in args:
+      setattr(ret, var_name, args[var_name])
 
-  if 'verbose' in args:
-    ret.verbose = args['verbose']
+  
+  pass_variable('recursive')
+  pass_variable('verbose')
+  pass_variable('prepend_dirname')
+  pass_variable('make_parents')
 
-  if 'prepend_dirname' in args:
-    ret.prepend_dirname = args['prepend_dirname']
-
-  if 'make_parents' in args:
-    ret.make_parents = args['make_parents']
 
   ret.no_host_key_checking = args['no_host_key_checking']
   

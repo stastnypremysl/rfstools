@@ -26,8 +26,22 @@ def default_arg_parser(description:str='') -> configargparse.ArgParser:
 
   ret.add('-H', '--host', help='The address of server.', env_var='RFSTOOLS_HOST')
   ret.add('-P', '--port', help='The port for a connection to the file storage. Defaults to RFC standard port.', env_var='RFSTOOLS_PORT', type=int)
-  ret.add('-T', '--connection-type', help='A connection type to the file storage. (SMB/SFTP/FTP/FS/FTPS)', env_var='RFSTOOLS_CONNECTION_TYPE', required=True)
-  ret.add('-S', '--service-name', help='Contains a name of shared folder. Applicable only for SMB.', env_var='RFSTOOLS_SERVICE_NAME')
+  ret.add('-T', '--connection-type', help='A connection type to the file storage. (SMB12/SMB23/SFTP/FTP/FS/FTPS) SMB12 is samba version 1 or 2 and SMB23 is samba version 2 or 3.', 
+          env_var='RFSTOOLS_CONNECTION_TYPE', required=True)
+
+  ret.add('-S', '--service-name', help='Contains a name of shared folder. Applicable only for SMB12/SMB23.', env_var='RFSTOOLS_SERVICE_NAME')
+  ret.add('--client-name', help='Overrides a default RFSTOOLS client name. Applicable only for SMB12/SMB23.', env_var='RFSTOOLS_CLIENT_NAME', default='RFSTOOLS')
+
+  ret.add('--use-ntlm-v1', help='Enables deprecated ntlm-v1 authentication. Applicable only for SMB12.', action='store_true', env_var="RFSTOOLS_USE_NTLM_V1")
+  ret.add('--use-direct-tcp', help='Enables newer direct TCP connection over NetBIOS connection. Applicable only for SMB12. (don\'t forget to change port to 445)', 
+          env_var="RFSTOOLS_USE_DIRECT_TCP", action='store_true')
+
+  ret.add('--enable-encryption', help='Enables encryption for a SMB3 connection. Applicable only for SMB23.', action='store_true', env_var='RFSTOOLS_ENABLE_ENCRYPTION')
+  ret.add('--disable-secure-negotiate', help='Disables secure negotiate requirement for a SMB connection. Applicable only for SMB23.', 
+          action='store_true', env_var='RFSTOOLS_DISABLE_SECURE_NEGOTIATE')
+  ret.add('--no-dfs', help='Disables DFS support - useful as a bug fix. Applicable only for SMB23.', action='store_true', env_var='RFSTOOLS_NO_DFS')
+  ret.add('--dfs-domain-controller', help='The DFS domain controller address. Useful in case, when rfstools fails to find it themself. Applicable only for SMB23',
+          env_var='RFSTOOLS_DFS_DOMAIN_CONTROLLER')
 
   ret.add('-Z', '--remote-prefix', help='Contains a prefix, which will be prepended to all remote addresses.', env_var='RFSTOOLS_REMOTE_PREFIX', default='')
   ret.add('-x', '--transaction', help='Specifies the name of transaction in which the command should be executed. Not implemented yet.', env_var='RFSTOOLS_TRANSACTION')
@@ -41,20 +55,20 @@ def default_arg_parser(description:str='') -> configargparse.ArgParser:
 
   return ret
 
-def oneplus_arg_parser(description=''):
+def oneplus_arg_parser(description:str=''): -> configargparse.ArgParser:
   ret = default_arg_parser(description=description)
   ret.add('files', nargs="+", help='File(s) to process. It may contain wildcards. Files must start with prefix r: - no other files than remote are supported.', metavar='FILE(S)')
     
   return ret
 
 
-def one_arg_parser(description=''):
+def one_arg_parser(description:str=''): -> configargparse.ArgParser:
   ret = default_arg_parser(description=description)
   ret.add('file', help='File to process. File must start with prefix r: - no other file than remote is supported.', metavar='FILE')
 
   return ret
 
-def many_to_one_arg_parser(description=''):
+def many_to_one_arg_parser(description:str=''): -> configargparse.ArgParser:
   ret = default_arg_parser(description=description)
   ret.add('source_files', nargs="+", help='Source file(s) to transmit. It may contain wildcards. Remote file(s) must start with prefix r:', metavar='SOURCE_FILE')
 

@@ -55,20 +55,20 @@ def default_arg_parser(description:str='') -> configargparse.ArgParser:
 
   return ret
 
-def oneplus_arg_parser(description:str=''): -> configargparse.ArgParser:
+def oneplus_arg_parser(description:str='') -> configargparse.ArgParser:
   ret = default_arg_parser(description=description)
   ret.add('files', nargs="+", help='File(s) to process. It may contain wildcards. Files must start with prefix r: - no other files than remote are supported.', metavar='FILE(S)')
     
   return ret
 
 
-def one_arg_parser(description:str=''): -> configargparse.ArgParser:
+def one_arg_parser(description:str='') -> configargparse.ArgParser:
   ret = default_arg_parser(description=description)
   ret.add('file', help='File to process. File must start with prefix r: - no other file than remote is supported.', metavar='FILE')
 
   return ret
 
-def many_to_one_arg_parser(description:str=''): -> configargparse.ArgParser:
+def many_to_one_arg_parser(description:str='') -> configargparse.ArgParser:
   ret = default_arg_parser(description=description)
   ret.add('source_files', nargs="+", help='Source file(s) to transmit. It may contain wildcards. Remote file(s) must start with prefix r:', metavar='SOURCE_FILE')
 

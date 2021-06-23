@@ -95,13 +95,15 @@ test-smb:
     
     - smbstatus
 
-    - export RFSTOOLS_CONNECTION_TYPE=SMB
+    - export RFSTOOLS_CONNECTION_TYPE=SMB12
     - export RFSTOOLS_HOST=127.0.0.1
     - export RFSTOOLS_USERNAME=testing
     - export RFSTOOLS_PASSWORD=testing
+    - export RFSTOOLS_PORT=445
     - export RFSTOOLS_SERVICE_NAME=share
+    - export RFSTOOLS_USE_DIRECT_TCP=true
 
-    #- ./tests/generic-tests
+    - ./tests/generic-tests
 
 
 

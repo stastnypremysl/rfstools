@@ -42,6 +42,7 @@ def default_arg_parser(description:str='') -> configargparse.ArgParser:
   ret.add('--no-dfs', help='Disables DFS support - useful as a bug fix. Applicable only for SMB23.', action='store_true', env_var='RFSTOOLS_NO_DFS')
   ret.add('--dfs-domain-controller', help='The DFS domain controller address. Useful in case, when rfstools fails to find it themself. Applicable only for SMB23',
           env_var='RFSTOOLS_DFS_DOMAIN_CONTROLLER')
+  ret.add('--dont-require-signing', help='Disables signing requirement. Applicable only for SMB23.', action='store_true', env_var='RFSTOOLS_DONT_REQUIRE_SIGNING')
 
   ret.add('-Z', '--remote-prefix', help='Contains a prefix, which will be prepended to all remote addresses.', env_var='RFSTOOLS_REMOTE_PREFIX', default='')
   ret.add('-x', '--transaction', help='Specifies the name of transaction in which the command should be executed. Not implemented yet.', env_var='RFSTOOLS_TRANSACTION')

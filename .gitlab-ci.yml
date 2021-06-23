@@ -79,7 +79,7 @@ test-sftp:
     - ./tests/generic-tests
 
   
-test-smb:
+test-smb12:
   stage: test
   script:
     - pip install .
@@ -104,6 +104,32 @@ test-smb:
     - export RFSTOOLS_USE_DIRECT_TCP=true
 
     - ./tests/generic-tests
+
+
+test-smb23:
+  stage: test
+  script:
+    - pip install .
+
+    - apt install -y samba
+    - mkdir -p /samba/tmp
+    - chmod 1777 /samba/tmp
+    - cat < $SMB_CONFIG > /etc/samba/smb.conf
+    - testparm /etc/samba/smb.conf
+    - smbd -D
+    - nmbd -D
+    - sleep 10
+    
+    - smbstatus
+
+    - export RFSTOOLS_CONNECTION_TYPE=SMB23
+    - export RFSTOOLS_HOST=127.0.0.1
+    - export RFSTOOLS_USERNAME=testing
+    - export RFSTOOLS_PASSWORD=testing
+    - export RFSTOOLS_SERVICE_NAME=share
+    - export RFSTOOLS_DISABLE_SECURE_NEGOTIATE=True
+
+#    - ./tests/generic-tests
 
 
 

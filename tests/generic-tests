@@ -70,7 +70,7 @@ cp_test()(
     pcp $l1_file r:$l2_file || die "Copy to remote dest failed."
     pcp r:$l2_file $l3_file || die "Copy from remote dest failed."
      
-    diff $l1_file $l2_file || die "Copied files differ"
+    diff $l1_file $l3_file || die "Copied files differ"
  
   ) || print_test_fail
   print_test_succeeded

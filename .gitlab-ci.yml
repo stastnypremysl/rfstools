@@ -127,6 +127,7 @@ test-smb23:
     - export RFSTOOLS_USERNAME=testing
     - export RFSTOOLS_PASSWORD=testing
     - export RFSTOOLS_SERVICE_NAME=share
+    - export RFSTOOLS_DISABLE_SECURE_NEGOTIATE=True
 
     - ./tests/generic-tests
 

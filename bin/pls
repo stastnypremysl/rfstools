@@ -5,8 +5,16 @@ import logging
 
 def get_instance():
   p = arg_parser.one_arg_parser(description='This command list a given remote folder, or returns a file name, if it is not a folder.')
+
   p.add('-p', '--prepend-dirname', action='store_true', help='Enables prepending dirnames (+ r:) to the output.')
-  return arg_processor.init(p, "pls")
+  p.add('-d', '--directory', action='store_true', help='List directories themself, not their content. Not implemented yet.')
+  p.add('-l', '--long-format', action='store_true', help='Use long listing format. Not implemented yet.')
+
+  p.add('--sort', help="Sort by time/size. eg. --sort=time. Not implemented yet.")
+  p.add('-r', '--reverse', help="Reverse order while sorting. Not implemented yet.")
+  p.add('--time-style', help="Eather standard, fulliso or timestamp. Not implemented yet.")
+
+  return arg_processor.init(p, "pls", ["prepend_dirname", "directory", "long_format", "sort", "reverse", "time_style"])
 
 try:
   with get_instance() as ic:

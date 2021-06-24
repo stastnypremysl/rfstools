@@ -10,7 +10,7 @@ def get_instance():
     'Nondirectory files are copied first into remote temporary files in the destination and then moved into destination. Local coping works as usual.')
   p.add('-r', '--recursive', action='store_true', help='Enables recursive coping.')
 
-  return arg_processor.init(p, "pcp")
+  return arg_processor.init(p, "pcp", ["recursive"])
 
 try:
   with get_instance() as ic:

@@ -23,7 +23,7 @@ def __anonymize_formatted_values(values):
   return "".join(ret)
     
 
-def init(arg_parser, name):
+def init(arg_parser, name, vars_to_pass):
   p = arg_parser
 
   args = vars(p.parse_args())
@@ -119,11 +119,10 @@ def init(arg_parser, name):
     if var_name in args:
       setattr(ret, var_name, args[var_name])
 
-  
-  pass_variable('recursive')
   pass_variable('verbose')
-  pass_variable('prepend_dirname')
-  pass_variable('make_parents')
+
+  for var in vars_to_pass:
+    pass_variable(var)
 
 
   ret.no_host_key_checking = args['no_host_key_checking']

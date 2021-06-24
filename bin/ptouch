@@ -5,7 +5,7 @@ import logging
 
 def get_instance():
   p = arg_parser.oneplus_arg_parser(description='This command creates empty files at remote destination.')
-  return arg_processor.init(p, "ptouch")
+  return arg_processor.init(p, "ptouch", [])
 
 try:
   with get_instance() as ic:

@@ -6,7 +6,8 @@ import logging
 
 
 def get_instance():
-  p = arg_parser.many_to_one_arg_parser(description='Copies file(s) from source address to destination address. At least source or destination address must be remote.')
+  p = arg_parser.many_to_one_arg_parser(description='Copies file(s) from source address to destination address. At least source or destination address must be remote. ' +
+    'Nondirectory files are copied first into remote temporary files in the destination and then moved into destination. Local coping works as usual.')
   p.add('-r', '--recursive', action='store_true', help='Enables recursive coping.')
 
   return arg_processor.init(p, "pcp")

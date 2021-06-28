@@ -163,7 +163,7 @@ def init(arg_parser, name, vars_to_pass):
     p2_list = map(add_remote_prefix, p_list)
 
     w_list = expand_wildcards(p2_list)
-    return map(path_utils.GenericPath, w_list)
+    return [*map(path_utils.GenericPath, w_list)]
 
   def process_single_path(path):
     p2 = add_remote_prefix(path)

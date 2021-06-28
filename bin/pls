@@ -19,13 +19,14 @@ def get_instance():
   return arg_processor.init(p, "pls", ["prepend_dirname", "directory", "long_format", "sort", "reverse", "time_style"])
 
 def ls(path):
+  logging.debug("Printing list output of remote file r:{}".format(path))
+
   if ic.prepend_dirname:
     if ic.directory:
       output_list = ['r:' + path]
 
     else:
-      output_list = ic.connection.xls(path)
-      output_list = [** "r:{}".format(s) for s in output_list] 
+      output_list = ["r:{}".format(s) for s in ic.connection.xls(path)]
 
   else:
     if ic.directory:
@@ -35,23 +36,20 @@ def ls(path):
     else:
       output_list = ic.connection.ls(path)
 
-  print(s) for s in output_list
+  for s in output_list:
+    print(s)
     
      
 try:
   with get_instance() as ic:
 
-    if ic.prepend_dirname:
-      ls = ic.connection.xls
-    else:
-      ls = ic.connection.ls
-
     for f in ic.files:
-      if ic.files.remote == False:
+      if f.remote == False:
         raise ValueError("A given file must be remote.")
 
     if len(ic.files) == 1 or ic.directory:
-      ls(f.path) for f in ic.files
+      for f in ic.files:
+        ls(f.path)
     
     else:
       nondirs = []
@@ -64,7 +62,9 @@ try:
         else:   
           nondirs.append(f.path)
 
-      ls(nondir) for nondir in nondirs
+      for nondir in nondirs:
+        ls(nondir)
+
       for d in dirs:
         if ic.prepend_dirname:
           print('r:' + d + ':')

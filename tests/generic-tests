@@ -85,11 +85,15 @@ ls_test()(
     l1_file=$(generate_file)
     l2_file=$l1_file.transmit
 
-    trap "rm $l1_file" EXIT
+    pls_output=$(mktemp)
+
+    trap "rm $l1_file $pls_output" EXIT
     
     pcp $l1_file r:$l2_file || die "pcp to remote destination failed"
     
-    if ! ( pls -p r:/tmp | grep -F $l2_file ); then
+    if ! ( pls -p r:/tmp | tee $pls_output | grep -x -F "r:$l2_file" ); then
+      echo "r:/tmp contains" >&2
+      cat $pls_output >&2
       die "pls r:/tmp doesn't contain new added file"
     fi
  

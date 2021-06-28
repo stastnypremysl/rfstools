@@ -5,7 +5,7 @@ import logging
 
 def get_instance():
   p = arg_parser.oneplus_arg_parser(description='This command exits with success, when all given remote files exists. The command fails with 2, when at least one of files is missing.')
-  return arg_processor.init(p, "pexist")
+  return arg_processor.init(p, "pexist", [])
 
 try:
   with get_instance() as ic:

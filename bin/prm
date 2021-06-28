@@ -6,7 +6,7 @@ import logging
 def get_instance():
   p = arg_parser.oneplus_arg_parser(description='This command unlinks nonfolder files. If recursivity enabled, it deletes whole trees.')
   p.add('-r', '--recursive', action='store_true', help='Enables recursive removing.')
-  return arg_processor.init(p, "prm")
+  return arg_processor.init(p, "prm", ["recursive"])
 
 try:
   with get_instance() as ic:

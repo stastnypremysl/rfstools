@@ -27,5 +27,12 @@ print_test_succeeded(){
   test=NAN
 }
 
+run_test()(
+ test=$1
+ print_test_start
 
+ $1 || print_test_fail  
+ print_test_succeeded
+  
+)
 

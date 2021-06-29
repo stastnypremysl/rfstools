@@ -9,34 +9,28 @@ is_crlf(){
 }
 
 crlf_test()(
-  test=crlf_test
-  print_test_start
-  (
-    tmp=$(mktemp)
-    tmp2=$tmp.2
-    trap "rm $tmp"
+  tmp=$(mktemp)
+  tmp2=$tmp.2
+  trap "rm $tmp"
 
-    export RFSTOOLS_REMOTE_CRLF=TRUE
-    cat > $tmp << EOF
-      Nice line 1
-      Nice line 2
-      Nice line 3
+  export RFSTOOLS_REMOTE_CRLF=TRUE
+  cat > $tmp << EOF
+    Nice line 1
+    Nice line 2
+    Nice line 3
 EOF
-    
-     pcp -X $tmp r:$tmp2
-
-     is_crlf $tmp2 || die "File didn't convert to CRLF from LF." 
-     
-     echo "" > $tmp
-     pcp -X r:$tmp2 $tmp
-
-     is_crlf $tmp && die "File didn't convert to LF from CRLF."
-     exit 0 
-  ) || print_test_fail
-  print_test_succeeded
   
+   pcp -X $tmp r:$tmp2
+
+   is_crlf $tmp2 || die "File didn't convert to CRLF from LF." 
+   
+   echo "" > $tmp
+   pcp -X r:$tmp2 $tmp
+
+   is_crlf $tmp && die "File didn't convert to LF from CRLF."
+   exit 0 
 )
 
-crlf_test
+run_test crlf_test
 
 

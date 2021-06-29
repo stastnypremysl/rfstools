@@ -1,0 +1,139 @@
+#!/bin/bash
+dir=$(dirname $0)
+. $dir/test-lib
+
+
+touch_test()(
+  test=touch_test
+  print_test_start
+  (
+    tmp=$(mktemp)
+    rtmp=$tmp.remote
+    trap "rm $tmp; prm r:$rtmp" EXIT
+
+    ptouch r:$rtmp || die "Touch failed"    
+    pexist r:$rtmp || die "Touched remote file doesn't exist."
+  
+  ) || print_test_fail
+  print_test_succeeded
+)
+
+exist_test()(
+  test=exist_test
+  print_test_start
+  (
+    tmp=$(mktemp)
+    rtmp=$tmp.remote
+    trap "rm $tmp" EXIT
+
+    ! pexist r:$rtmp || die "Exist tells, that nonexistent remote file exist."
+
+  ) || print_test_fail
+  print_test_succeeded
+)
+
+cp_test()(
+  test=cp_test
+  print_test_start
+  
+  (
+    l1_file=$(generate_file)
+    l2_file=$l1_file.transmit
+    l3_file=$l1_file.transmit_done
+
+    trap "rm $l1_file $l3_file; prm r:$l2_file" EXIT
+    
+    pcp $l1_file r:$l2_file || die "Copy to remote dest failed."
+    pcp r:$l2_file $l3_file || die "Copy from remote dest failed."
+     
+    diff $l1_file $l3_file || die "Copied files differ"
+ 
+  ) || print_test_fail
+  print_test_succeeded
+    
+)
+
+ls_test()(
+  test=ls_test
+  print_test_start
+  
+  (
+    l1_file=$(generate_file)
+    l2_file=$l1_file.transmit
+
+    pls_output=$(mktemp)
+
+    trap "rm $l1_file $pls_output" EXIT
+    
+    pcp $l1_file r:$l2_file || die "pcp to remote destination failed"
+    
+    if ! ( pls -p r:/tmp | tee $pls_output | grep -x -F "r:$l2_file" ); then
+      echo "r:/tmp contains" >&2
+      cat $pls_output >&2
+      die "pls r:/tmp doesn't contain new added file"
+    fi
+ 
+  ) || print_test_fail
+  print_test_succeeded
+)
+
+mv_test()(
+  test=mv_test
+  print_test_start
+  
+  (
+    l1_file=$(generate_file)
+    l1_file_dup=$l1_file.dup
+    cp $l1_file $l1_file_dup
+    trap "rm $l1_file_dup" EXIT
+        
+    l2_file=$l1_file.transmit
+    l3_file=$l1_file.done
+
+    pmv $l1_file r:$l2_file || exit 1
+    pmv r:$l2_file $l3_file || exit 1
+
+    diff $l1_file_dup $l3_file || die "Moved files differ."
+
+    if [ -e $l1_file ]; then
+      die "Local moved file exist."
+    fi
+
+    if (pls -p r:/tmp | grep -F $l2_file >/dev/null); then
+      die "Remote moved file exist."
+    fi
+
+    exit 0
+ 
+  ) || print_test_fail
+  print_test_succeeded
+    
+)
+
+rm_test()(
+  test=rm_test
+  print_test_start
+  
+  (
+    l1_file=$(generate_file)
+    l2_file=$l1_file.transmit
+
+    trap "rm $l1_file" EXIT
+    
+    pcp $l1_file r:$l2_file || die "pcp to remote destination failed"
+    prm r:$l2_file || die "prm failed"
+    
+    if ( pls -p r:/tmp | grep -F $(l2_file) ); then
+      die "pls r:/tmp contain deleted file"
+    fi
+ 
+  ) || print_test_fail
+  print_test_succeeded
+)
+
+for t in cp_test ls_test mv_test rm_test \
+  touch_test exist_test; do
+  
+  run_test $t
+done
+

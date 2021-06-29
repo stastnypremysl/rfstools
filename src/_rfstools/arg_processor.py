@@ -36,7 +36,13 @@ def init(arg_parser, name, vars_to_pass):
   elif args["verbose"] == True:
     log_level = logging.INFO
 
-  logging.basicConfig(format='%(asctime)s; {}; {}; %(message)s'.format(name, os.getpid()), level=log_level)
+
+  logging_config = {}
+  if args['log_file'] is not None:
+    logging_config["filename"] = args['log_file']
+    logging_config["filemode"] = 'a'
+
+  logging.basicConfig(format='%(asctime)s; {}; {}; %(message)s'.format(name, os.getpid()), level=log_level, **logging_config)
 
   logging.info("Starting rfstools version {}".format(sys.version))
   logging.info( __anonymize_formatted_values(p.format_values()) )

@@ -9,8 +9,9 @@ def get_instance():
   p = arg_parser.many_to_one_arg_parser(description='Copies file(s) from source address to destination address. At least source or destination address must be remote. ' +
     'Nondirectory files are copied first into remote temporary files in the destination and then moved into destination. Local coping works as usual.')
   p.add('-r', '--recursive', action='store_true', help='Enables recursive coping.')
+  p.add('-f', '--force', action='store_true', help='Enable force mode. (skip nonexistent source files)')
 
-  return arg_processor.init(p, "pcp", ["recursive"])
+  return arg_processor.init(p, "pcp", ["recursive", "force"])
 
 try:
   with get_instance() as ic:

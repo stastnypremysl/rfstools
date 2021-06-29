@@ -138,16 +138,16 @@ def init(arg_parser, name, vars_to_pass):
   
   glob = pglobber.PGlobber(ret.connection).glob
   
-  def add_remote_prefix(path):
+  def alter_path(path):
+    if args["remote_only"] and not path_utils.is_remote(path):
+      path = path_utils.add_r_prefix(path)
+
     if path_utils.is_remote(path):
       path = path_utils.remove_r_prefix(path)
       path = args['remote_prefix'] + path
-      path = path_utils.add_r_prefix(path)
+      path = path_utils.add_r_prefix(path)    
 
-      return path
-
-    else:
-      return path
+    return path
   
   def expand_wildcards(i_list):
     logging.debug("Expanding wildcards...")
@@ -169,13 +169,13 @@ def init(arg_parser, name, vars_to_pass):
     return o_list
   
   def process_paths(p_list):
-    p2_list = map(add_remote_prefix, p_list)
+    p2_list = map(alter_path, p_list)
 
     w_list = expand_wildcards(p2_list)
     return [*map(path_utils.GenericPath, w_list)]
 
   def process_single_path(path):
-    p2 = add_remote_prefix(path)
+    p2 = alter_path(path)
 
     return path_utils.GenericPath(path)
   

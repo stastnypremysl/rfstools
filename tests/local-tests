@@ -1,7 +1,23 @@
 #!/bin/bash
 
-crlf_test(){
-  :
-}
+export RFSTOOLS_CONNECTION_TYPE=FS
+
+crlf_test()(
+  tmp=$(mktemp)
+  trap "rm $tmp"
+
+  export RFSTOOLS_REMOTE_CRLF=TRUE
+  cat > $tmp << EOF
+    Nice line 1
+    Nice line 2
+    Nice line 3
+EOF
+
+  file $tmp
+  unix2dos $tmp
+  file $tmp
+)
+
+crlf_test
 
 

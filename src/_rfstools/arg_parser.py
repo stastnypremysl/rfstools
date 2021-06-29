@@ -45,7 +45,7 @@ def default_arg_parser(description:str='') -> configargparse.ArgParser:
   ret.add('--dont-require-signing', help='Disables signing requirement. Applicable only for SMB23.', action='store_true', env_var='RFSTOOLS_DONT_REQUIRE_SIGNING')
 
   ret.add('-Z', '--remote-prefix', help='Contains a prefix, which will be prepended to all remote addresses.', env_var='RFSTOOLS_REMOTE_PREFIX', default='')
-  ret.add('-R', '--remote-only', help='If enabled, will it will add r: prefix to all given paths without it..', env_var='RFSTOOLS_REMOTE_ONLY', default=False, action='store_true')
+  ret.add('-R', '--remote-only', help='If enabled, will it will add r: prefix to all given paths without it.', env_var='RFSTOOLS_REMOTE_ONLY', default=False, action='store_true')
 
   ret.add('-x', '--transaction', help='Specifies the name of transaction in which the command should be executed. Not implemented yet.', env_var='RFSTOOLS_TRANSACTION')
 

@@ -159,6 +159,8 @@ build:
     paths:
       - dist/*.whl
       - dist/*.tar.gz
+    expire_in: 4 weeks
+
 
 deploy:
   stage: deploy
@@ -210,6 +212,7 @@ deploy-doc:
   artifacts:
     paths:
       - /builds/rfs/rfstools/doc
+    expire_in: 4 weeks
       
 
 # pages:

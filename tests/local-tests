@@ -33,7 +33,7 @@ EOF
      is_crlf $tmp && die "File didn't convert to LF from CRLF."
      exit 0 
   ) || print_test_fail
- 
+  print_test_succeeded
   
 )
 

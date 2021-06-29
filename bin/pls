@@ -18,6 +18,15 @@ def get_instance():
 
   return arg_processor.init(p, "pls", ["prepend_dirname", "directory", "long_format", "sort", "reverse", "time_style"])
 
+printed = []
+
+def v_print(text):
+  printed.append(text)
+  print(text)
+
+def finalize_printing():
+  logging.info('pls output:\n' + "\n".join(printed))
+
 def ls(path):
   logging.debug("Printing list output of remote file r:{}".format(path))
 
@@ -37,7 +46,7 @@ def ls(path):
       output_list = ic.connection.ls(path)
 
   for s in output_list:
-    print(s)
+    v_print(s)
     
      
 try:
@@ -67,18 +76,20 @@ try:
 
       for d in dirs:
         if ic.prepend_dirname:
-          print('r:' + d + ':')
+          v_print('r:' + d + ':')
           ls(d)
 
         else:
           dirname, basename = os.path.split(d)
-          print(basename + ':')
+          v_print(basename + ':')
           ls(d)
 
 
 except Exception: 
+  finalize_printing()
   logging.exception("Fatal error. (returning 1)")
   exit(1)
  
+finalize_printing()
 logging.info("Finished succesfully. (returning 0)")
 exit(0)

@@ -41,6 +41,9 @@ def init(arg_parser, name, vars_to_pass):
   if args['log_file'] is not None:
     logging_config["filename"] = args['log_file']
     logging_config["filemode"] = 'a'
+    
+    with open(args['log_file'], 'a') as l:
+      l.write("\n==================================================\n\n")
 
   logging.basicConfig(format='%(asctime)s; {}; {}; %(message)s'.format(name, os.getpid()), level=log_level, **logging_config)
 

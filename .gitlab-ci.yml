@@ -48,7 +48,7 @@ default:
 test-tox:
   stage: test
   script: 
-    - apt install libc6 dos2unix
+    - apt install -y libc6 dos2unix
     - pip install tox
     - tox
 

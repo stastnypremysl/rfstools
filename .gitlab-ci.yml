@@ -88,7 +88,7 @@ test-smb12:
     - apt install -y samba
     - mkdir -p /samba/tmp
     - chmod 1777 /samba/tmp
-    - cat < $SMB_CONFIG > /etc/samba/smb.conf
+    - cat < $TEST_SMB_CONFIG > /etc/samba/smb.conf
     - testparm /etc/samba/smb.conf
     - smbd -D
     - nmbd -D
@@ -115,7 +115,7 @@ test-smb23:
     - apt install -y samba
     - mkdir -p /samba/tmp
     - chmod 1777 /samba/tmp
-    - cat < $SMB_CONFIG > /etc/samba/smb.conf
+    - cat < $TEST_SMB_CONFIG > /etc/samba/smb.conf
     - testparm /etc/samba/smb.conf
     - smbd -D
     - nmbd -D

@@ -6,4 +6,3 @@ rfslib
 Sphinx
 sphinxcontrib-napoleon
 twine
-sphinx-markdown-builder

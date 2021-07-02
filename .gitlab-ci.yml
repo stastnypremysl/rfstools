@@ -40,8 +40,7 @@ default:
     - |
       cat > ~/.pip/pip.conf <<EOF
       [global]
-      extra-index-url = https://rfstools-worker:${CI_RFSTOOLS_WORKER_TOKEN}>@git.profinit.eu/api/v4/projects/551/packages/pypi/simple 
-        https://rfstools-worker:${CI_RFSTOOLS_WORKER_TOKEN}@git.profinit.eu/api/v4/projects/552/packages/pypi/simple
+      extra-index-url = https://rfstools-worker:${CI_RFSTOOLS_WORKER_TOKEN}@git.profinit.eu/api/v4/projects/552/packages/pypi/simple
 
       EOF
 

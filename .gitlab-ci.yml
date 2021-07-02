@@ -181,7 +181,7 @@ backup-dependencies:
   script:
     - mkdir dependencies
     - | 
-      pip install --download=./dependencies -r requirements --no-binary :all:
+      pip download -d ./dependencies -r requirements.txt --no-binary :all:
   artifacts:
     paths:
       - dependencies

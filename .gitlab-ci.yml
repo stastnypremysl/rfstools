@@ -181,6 +181,7 @@ backup-dependencies:
   script:
     - mkdir dependencies
     - | 
+      apt install -y pandoc ghc rustc
       pip download -d ./dependencies -r requirements.txt --no-binary :all:
   artifacts:
     paths:

@@ -186,6 +186,7 @@ backup-dependencies:
   artifacts:
     paths:
       - dependencies
+    expire_in: never
 
 deploy-doc:
   stage: deploy

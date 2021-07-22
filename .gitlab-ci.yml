@@ -135,8 +135,12 @@ test-smb23:
     - export RFSTOOLS_SERVICE_NAME=share
     - export RFSTOOLS_DISABLE_SECURE_NEGOTIATE=True
 
-    - ./tests/generic-tests
+    - ./tests/generic-tests >output.log 2>&1
 
+  artifacts:
+    paths:
+      - /builds/rfs/rfstools/output.log
+    expire_in: 1 weeks
 
 
 test-ftp:

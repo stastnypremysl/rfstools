@@ -129,7 +129,7 @@ test-smb23:
     - export RFSTOOLS_SERVICE_NAME=share
     - export RFSTOOLS_DISABLE_SECURE_NEGOTIATE=True
 
-#    - ./tests/generic-tests
+    - ./tests/generic-tests
 
 
 

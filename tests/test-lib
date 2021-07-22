@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
-export RFSTOOLS_DEBUG=TRUE
+
+if [ -z "$RFSTOOLS_DEBUG" ]; then
+  export RFSTOOLS_DEBUG=TRUE
+fi
 
 die(){
   echo "$*"

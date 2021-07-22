@@ -121,6 +121,13 @@ test-smb23:
     - sleep 10
     
     - smbstatus
+    
+    - adduser testing
+    - > 
+      smbpasswd -a testing -s <<EOF
+      testing
+      testing
+      EOF
 
     - export RFSTOOLS_CONNECTION_TYPE=SMB23
     - export RFSTOOLS_HOST=127.0.0.1

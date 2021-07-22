@@ -122,7 +122,7 @@ test-smb23:
     
     - smbstatus
     
-    - > 
+    - | 
       smbpasswd -a root -s <<EOF
       testing
       testing

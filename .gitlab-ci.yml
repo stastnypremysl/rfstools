@@ -134,13 +134,10 @@ test-smb23:
     - export RFSTOOLS_PASSWORD=testing
     - export RFSTOOLS_SERVICE_NAME=share
     - export RFSTOOLS_DISABLE_SECURE_NEGOTIATE=True
+    - export RFSTOOLS_DEBUG=False
+    - export RFSTOOLS_VERBOSE=True
 
-    - ./tests/generic-tests >output.log 2>&1
-
-  artifacts:
-    paths:
-      - /builds/rfs/rfstools/output.log
-    expire_in: 1 weeks
+    - ./tests/generic-tests
 
 
 test-ftp:

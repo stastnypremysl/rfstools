@@ -146,14 +146,16 @@ test-ftp:
     - pip install .
 
     - apt install -y vsftpd
+    - cat < $TEST_SMB_CONFIG > /etc/vsftpd.conf
+    - systemctl start vsftpd
 
-test-ftps:
-  stage: test
-  script:
-    - pip install .
-    
-    - apt install -y vsftpd
-    
+    - export RFSTOOLS_CONNECTION_TYPE=FTP
+    - export RFSTOOLS_HOST=127.0.0.1
+    - export RFSTOOLS_USERNAME=anonymous
+    - export RFSTOOLS_PASSWORD=anonymous@profinit.lan
+
+    - ./tests/generic-tests
+
 
 build:
   stage: build

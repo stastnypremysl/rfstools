@@ -145,15 +145,18 @@ test-ftp:
   script:
     - pip install .
 
-    - apt install -y vsftpd
+    - apt install -y vsftpd net-tools
+    - cat < $TEST_VSFTPD_CONFIG  > /etc/vsftpd.conf
+    - vsftpd /etc/vsftpd.conf &
+    - netstat -l
 
-test-ftps:
-  stage: test
-  script:
-    - pip install .
-    
-    - apt install -y vsftpd
-    
+    - export RFSTOOLS_CONNECTION_TYPE=FTP
+    - export RFSTOOLS_HOST=127.0.0.1
+    - export RFSTOOLS_USERNAME=anonymous
+    - export RFSTOOLS_PASSWORD=anonymous@profinit.lan
+
+    - ./tests/generic-tests
+
 
 build:
   stage: build

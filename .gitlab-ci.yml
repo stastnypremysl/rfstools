@@ -147,7 +147,7 @@ test-ftp:
 
     - apt install -y vsftpd
     - cat < $TEST_SMB_CONFIG > /etc/vsftpd.conf
-    - systemctl start vsftpd
+    - vsftpd &
 
     - export RFSTOOLS_CONNECTION_TYPE=FTP
     - export RFSTOOLS_HOST=127.0.0.1

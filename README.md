@@ -100,6 +100,11 @@ Finally, install the package using `pip`
 
     pip install rfstools
 
+## Upgrade
+If you installed this utility using the manual above, you should be able to easily upgrade rfstools and rfslib to the current version using
+
+    pip install -U rfstools rfslib
+
 
 ## Configuration
 Args that start with '--' (eg. -U) can also be set in a config file

@@ -26,7 +26,7 @@ def default_arg_parser(description:str='') -> configargparse.ArgParser:
 
   ret.add('-H', '--host', help='The address of server.', env_var='RFSTOOLS_HOST')
   ret.add('-P', '--port', help='The port for a connection to the file storage. Defaults to RFC standard port.', env_var='RFSTOOLS_PORT', type=int)
-  ret.add('-T', '--connection-type', help='A connection type to the file storage. (SMB12/SMB23/SFTP/FTP/FS/FTPS) SMB12 is samba version 1 or 2 and SMB23 is samba version 2 or 3.', 
+  ret.add('-T', '--connection-type', help='A connection type to the file storage. (SMB12/SMB23/SFTP/FTP/FS) SMB12 is samba version 1 or 2 and SMB23 is samba version 2 or 3.', 
           env_var='RFSTOOLS_CONNECTION_TYPE', required=True)
 
   ret.add('-S', '--service-name', help='Contains a name of shared folder. Applicable only for SMB12/SMB23.', env_var='RFSTOOLS_SERVICE_NAME')
@@ -43,6 +43,9 @@ def default_arg_parser(description:str='') -> configargparse.ArgParser:
   ret.add('--dfs-domain-controller', help='The DFS domain controller address. Useful in case, when rfstools fails to find it themself. Applicable only for SMB23',
           env_var='RFSTOOLS_DFS_DOMAIN_CONTROLLER')
   ret.add('--dont-require-signing', help='Disables signing requirement. Applicable only for SMB23.', action='store_true', env_var='RFSTOOLS_DONT_REQUIRE_SIGNING')
+
+  ret.add('--tls', help='Activate TLS. Applicable only for FTP.', action='store_true', env_var='RFSTOOLS_TLS')
+  ret.add('--tls-trust-chain', help='The trust chain file path for TLS. Applicable only for FTP.', action='store_true', env_var='RFSTOOLS_TLS_TRUST_CHAIN')
 
   ret.add('-Z', '--remote-prefix', help='Contains a prefix, which will be prepended to all remote addresses.', env_var='RFSTOOLS_REMOTE_PREFIX', default='')
   ret.add('-R', '--remote-only', help='If enabled, will it will add r: prefix to all given paths without it.', env_var='RFSTOOLS_REMOTE_ONLY', default=False, action='store_true')

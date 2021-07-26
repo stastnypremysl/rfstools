@@ -147,7 +147,10 @@ test-ftp:
 
     - apt install -y vsftpd net-tools
     - cat < $TEST_VSFTPD_CONFIG  > /etc/vsftpd.conf
+    - mkdir -p /var/run/vsftpd/empty
     - vsftpd /etc/vsftpd.conf &
+    - sleep 5
+    
     - netstat -l
 
     - export RFSTOOLS_CONNECTION_TYPE=FTP

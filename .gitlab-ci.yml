@@ -140,25 +140,25 @@ test-smb23:
     - ./tests/generic-tests
 
 
-test-ftp:
-  stage: test
-  script:
-    - pip install .
+#test-ftp:
+#  stage: test
+#  script:
+#    - pip install .
 
-    - apt install -y vsftpd net-tools
-    - cat < $TEST_VSFTPD_CONFIG  > /etc/vsftpd.conf
-    - mkdir -p /var/run/vsftpd/empty
-    - vsftpd /etc/vsftpd.conf &
-    - sleep 5
+#    - apt install -y vsftpd net-tools
+#    - cat < $TEST_VSFTPD_CONFIG  > /etc/vsftpd.conf
+#    - mkdir -p /var/run/vsftpd/empty
+#    - vsftpd /etc/vsftpd.conf &
+#    - sleep 5
     
-    - netstat -l
+#    - netstat -l
 
-    - export RFSTOOLS_CONNECTION_TYPE=FTP
-    - export RFSTOOLS_HOST=127.0.0.1
-    - export RFSTOOLS_USERNAME=anonymous
-    - export RFSTOOLS_PASSWORD=anonymous@profinit.lan
+#    - export RFSTOOLS_CONNECTION_TYPE=FTP
+#    - export RFSTOOLS_HOST=127.0.0.1
+#    - export RFSTOOLS_USERNAME=anonymous
+#    - export RFSTOOLS_PASSWORD=anonymous@profinit.lan
 
-    - ./tests/generic-tests
+#    - ./tests/generic-tests
 
 
 build:

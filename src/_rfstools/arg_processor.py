@@ -106,16 +106,14 @@ def init(arg_parser, name, vars_to_pass):
   elif c_type == "FTP":
     logging.debug("Initiating FTP connection.")
     from rfslib import ftp_pconnection
+    
+    if args['tls'] == True:
+      default_nonexistent_arg('port', 990)
+    else:
+      default_nonexistent_arg('port', 21)
 
-    default_nonexistent_arg('port', 21)
     ret.connection = ftp_pconnection.FtpPConnection(**args)
 
-  elif c_type == "FTPS":
-    logging.debug("Initiating FTPS connection.")
-    from rfslib import ftp_pconnection
-
-    default_nonexistent_arg('port', 990)
-    ret.connection = ftp_pconnection.FtpPConnection(tls=True, **args)
 
   else:
     raise ValueError("Connection type {} is unknown.".format(c_type))
@@ -132,7 +130,6 @@ def init(arg_parser, name, vars_to_pass):
 
   for var in vars_to_pass:
     pass_variable(var)
-
 
   ret.no_host_key_checking = args['no_host_key_checking']
   

@@ -46,6 +46,7 @@ def default_arg_parser(description:str='') -> configargparse.ArgParser:
 
   ret.add('--tls', help='Activate TLS. Applicable only for FTP.', action='store_true', env_var='RFSTOOLS_TLS')
   ret.add('--tls-trust-chain', help='The trust chain file path for TLS. Applicable only for FTP.', action='store_true', env_var='RFSTOOLS_TLS_TRUST_CHAIN')
+  ret.add('--passive-mode', help='Use passive mode for FTP. Applicable only for FTP.', action='store_true', env_var='RFSTOOLS_PASSIVE_MODE')
 
   ret.add('-Z', '--remote-prefix', help='Contains a prefix, which will be prepended to all remote addresses.', env_var='RFSTOOLS_REMOTE_PREFIX', default='')
   ret.add('-R', '--remote-only', help='If enabled, will it will add r: prefix to all given paths without it.', env_var='RFSTOOLS_REMOTE_ONLY', default=False, action='store_true')

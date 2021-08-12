@@ -1,4 +1,4 @@
-from rfslib import pglobber, pinstance, path_utils
+from rfslib import pglobber, pinstance, path_utils, abstract_pconnection
 import logging
 
 import os, sys
@@ -21,6 +21,141 @@ def __anonymize_formatted_values(values):
     ret.append("\n")
 
   return "".join(ret)
+
+def __init_settings(args):
+  settings = abstract_pconnection.p_connection_settings()
+
+  settings.direct_write = args['direct_write']
+
+  settings.local_crlf = args['local_crlf']
+  settings.local_encoding = args['local_encoding']
+
+  settings.remote_crlf = args['remote_crlf']
+  settings.remote_encoding = args['remote_encoding']
+
+  settings.skip_validation = args['skip_validation']
+  settings.text_transmission = args['text_transmission']
+
+  return settings
+
+
+def __autofill_missing_arguments(args):
+  c_type = args["connection_type"]
+
+  def default_nonexistent_arg(name, default):
+    if not name in args or args[name] == None:
+      logging.debug("No {} is given. Defaulting to {}.".format(name, default))
+      args[name] = default
+
+  if c_type == 'SMB12':
+    default_nonexistent_arg('port', 139)
+
+  elif c_type == 'SMB23':
+    default_nonexistent_arg('port', 445)
+    default_nonexistent_arg('dfs_domain_controller', None)
+
+  elif c_type == 'SFTP':
+    default_nonexistent_arg('port', 22)
+    default_nonexistent_arg('password', None)
+
+  elif c_type == 'FTP':
+    if args['tls'] == True:
+      default_nonexistent_arg('port', 990)
+    else:
+      default_nonexistent_arg('port', 21)
+
+
+def __validate_arguments(args):
+  c_type = args["connection_type"]
+
+  def check_arg_existence(name):
+    if not name in args or args[name] == None:
+      error = "Connection type {} needs optional argument {}.".format(c_type, name)
+      raise ValueError(error)
+
+  if not c_type == "FS":
+    check_arg_existence('host')
+    check_arg_existence('username')
+ 
+    if c_type == "SMB12" or c_type == "SMB23":
+      check_arg_existence('service_name')
+
+    if not c_type == "SFTP":
+      check_arg_existence('password')
+
+
+
+def __init_connection(args):
+  c_type = args["connection_type"]
+  settings = __init_settings(args)
+
+  
+  if c_type == "FS":
+    logging.debug("Initiating FS (direct file system pseudo) connection.")
+    from rfslib import fs_pconnection
+
+    return fs_pconnection.FsPConnection(settings)
+
+  elif c_type == "SFTP":
+    logging.debug("Initiating SFTP connection.")
+    from rfslib import sftp_pconnection
+
+    return sftp_pconnection.SftpPConnection(settings, 
+      host = args['host'], 
+      username = args['username'],
+      password = args['password'], 
+      key_filename = args['key_filename'],
+      port = args['port'], 
+      no_host_key_checking = args['no_host_key_checking'])
+
+  elif c_type == "SMB12":
+    logging.debug("Initiating SMB12 connection.")
+    from rfslib import smb12_pconnection
+
+    return smb12_pconnection.Smb12PConnection(settings,
+      host = args['host'], 
+      service_name = args['service_name'], 
+      username = args['username'], 
+      password = args['password'],
+      port = args['port'], 
+      use_direct_tcp = args['use_direct_tcp'],
+      use_ntlm_v1 = args['use_ntlm_v1'])
+
+  elif c_type == "SMB23":
+    logging.debug("Initiating SMB23 connection.")
+    from rfslib import smb23_pconnection
+
+    smb23_pconnection.config_smb23(
+      no_dfs = args['no_dfs'],
+      disable_secure_negotiate = args['disable_secure_negotiate'],
+      dfs_domain_controller = args['dfs_domain_controller'])
+
+    return smb23_pconnection.Smb23PConnection(settings, 
+      host = args['host'], 
+      service_name = args['service_name'], 
+      username = args['username'], 
+      password = args['password'],
+      port = args['port'], 
+      enable_encryption = args['enable_encryption'],
+      dont_require_signing = args['dont_require_signing'])
+
+  elif c_type == "FTP":
+    logging.debug("Initiating FTP connection.")
+    from rfslib import ftp_pconnection
+    
+    return ftp_pconnection.FtpPConnection(settings, 
+      host = args['host'], 
+      username = args['username'], 
+      password = args['password'],
+      port = args['port'], 
+      tls = args['tls'], 
+      passive_mode = args['passive_mode'],
+      connection_encoding=args['connection_encoding'])
+
+  else:
+    raise ValueError("Connection type {} is unknown.".format(c_type))
+
+  logging.debug("Connection successfully initiated.")
     
 
 def init(arg_parser, name, vars_to_pass):
@@ -50,75 +185,11 @@ def init(arg_parser, name, vars_to_pass):
   logging.info("Starting rfstools version {}".format(sys.version))
   logging.info( __anonymize_formatted_values(p.format_values()) )
    
+  __autofill_missing_arguments(args)
+  __validate_arguments(args) 
+
   logging.debug("Starting stage 1. (connection initialization)")
-
-  c_type = args["connection_type"]
-
-  def check_arg_existence(name):
-    if not name in args or args[name] == None:
-      error = "Connection type {} needs optional argument {}.".format(c_type, name)
-      raise ValueError(error)
-  
-  def default_nonexistent_arg(name, default):
-    if not name in args or args[name] == None:
-      logging.debug("No {} is given. Defaulting to {}.".format(name, default))
-      args[name] = default
-
-  if not c_type == "FS":
-    check_arg_existence('host')
-    check_arg_existence('username')
-
-    if not c_type == "SFTP":
-      check_arg_existence('password')
- 
-  
-  if c_type == "FS":
-    logging.debug("Initiating FS (direct file system pseudo) connection.")
-    from rfslib import fs_pconnection
-
-    ret.connection = fs_pconnection.FsPConnection(**args)
-
-  elif c_type == "SFTP":
-    logging.debug("Initiating SFTP connection.")
-    from rfslib import sftp_pconnection
-
-    default_nonexistent_arg('port', 22)
-    ret.connection = sftp_pconnection.SftpPConnection(**args)
-
-  elif c_type == "SMB12":
-    logging.debug("Initiating SMB12 connection.")
-    from rfslib import smb12_pconnection
-
-    check_arg_existence('service_name')
-    default_nonexistent_arg('port', 139)
-    ret.connection = smb12_pconnection.Smb12PConnection(**args)
-
-  elif c_type == "SMB23":
-    logging.debug("Initiating SMB23 connection.")
-    from rfslib import smb23_pconnection
-
-    check_arg_existence('service_name')
-    default_nonexistent_arg('port', 445)
-
-    smb23_pconnection.config_smb23(**args)
-    ret.connection = smb23_pconnection.Smb23PConnection(**args)
-
-  elif c_type == "FTP":
-    logging.debug("Initiating FTP connection.")
-    from rfslib import ftp_pconnection
-    
-    if args['tls'] == True:
-      default_nonexistent_arg('port', 990)
-    else:
-      default_nonexistent_arg('port', 21)
-
-    ret.connection = ftp_pconnection.FtpPConnection(**args)
-
-
-  else:
-    raise ValueError("Connection type {} is unknown.".format(c_type))
-
-  logging.debug("Connection successfully initiated.")
+  ret.connection = __init_connection(args) 
 
   logging.debug("Starting stage 2. (path processing)")
 

@@ -195,6 +195,7 @@ deploy-doc:
       apt install -y texlive-latex-recommended latexmk texlive-fonts-recommended texlive-latex-extra
 
       export doc_repo=/tmp/rfstools-docs
+      ./docs/generate-docs.sh
 
       pushd /tmp
       git clone https://oauth2:${CI_DOCS_ACCESS_TOKEN}@git.profinit.eu/rfs/rfstools-docs/
@@ -204,7 +205,6 @@ deploy-doc:
       rm -fr ./commands ./rfstools-dev-doc.pdf 2>/dev/null || :
       popd
 
-      ./docs/generate-docs.sh
       cp -r docs/_build/commands $doc_repo
       cp docs/_build/latex/rfstools.pdf $doc_repo/rfstools-dev-doc.pdf
       cp docs/_build/README.md $doc_repo

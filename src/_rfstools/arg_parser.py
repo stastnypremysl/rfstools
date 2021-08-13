@@ -98,7 +98,10 @@ def many_to_one_arg_parser(description:str='') -> configargparse.ArgParser:
                'BE SURE NOT TO TRANSMIT BINARY DATA WITH THIS OPTION.')
 
   ret.add('-C', '--remote-crlf', action='store_true', help='Remote target uses CRLF instead of LF', env_var="RFSTOOLS_REMOTE_CRLF")
-  ret.add('-E', '--remote-encoding', default='UTF8', help='The encoding of the remote target (eg. UTF8, UTF16). Defaults to UTF8. ', env_var="RFSTOOLS_REMOTE_ENCODING")
+  ret.add('-E', '--remote-encoding', default='UTF8', help='The encoding of the remote target (eg. UTF8, UTF16). Defaults to UTF8.', env_var="RFSTOOLS_REMOTE_ENCODING")
+
+  ret.add('--local-crlf', action='store_true', help='Local system uses CRLF instead of LF.', env_var='RFSTOOLS_LOCAL_CRLF')
+  ret.add('--local-encoding', default='UTF8', help='The encoding of the local system (eg. UTF8, UTF16). Defaults to UTF8.', env_var='RFSTOOLS_LOCAL_ENCODING')
 
   return ret
 

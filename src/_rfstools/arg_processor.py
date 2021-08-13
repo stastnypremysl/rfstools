@@ -46,6 +46,12 @@ def __autofill_missing_arguments(args):
     if not name in args or args[name] == None:
       logging.debug("No {} is given. Defaulting to {}.".format(name, default))
       args[name] = default
+  
+  default_nonexistent_arg('local_crlf', False)
+  default_nonexistent_arg('remote_crlf', False)
+
+  default_nonexistent_arg('local_encoding', 'UTF8')
+  default_nonexistent_arg('remote_encoding', 'UTF8')
 
   if c_type == 'SMB12':
     default_nonexistent_arg('port', 139)

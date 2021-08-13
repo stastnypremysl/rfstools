@@ -197,6 +197,11 @@ deploy-doc:
       export doc_repo=/tmp/rfstools-docs
       ./docs/generate-docs.sh
 
+      [ -n "$CI_COMMIT_TAG" ] && {
+        echo Sleeping for 30 seconds to prevent race condition.
+        sleep 30
+      }
+
       pushd /tmp
       git clone https://oauth2:${CI_DOCS_ACCESS_TOKEN}@git.profinit.eu/rfs/rfstools-docs/
       popd

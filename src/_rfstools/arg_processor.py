@@ -112,7 +112,7 @@ def __init_connection(args):
       host = args['host'], 
       username = args['username'],
       password = args['password'], 
-      key_filename = args['key_filename'],
+      keyfile = args['keyfile'],
       port = args['port'], 
       no_host_key_checking = args['no_host_key_checking'])
 

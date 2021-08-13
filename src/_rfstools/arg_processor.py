@@ -47,6 +47,8 @@ def __autofill_missing_arguments(args):
       logging.debug("No {} is given. Defaulting to {}.".format(name, default))
       args[name] = default
   
+  default_nonexistent_arg('text_transmission', False)
+
   default_nonexistent_arg('local_crlf', False)
   default_nonexistent_arg('remote_crlf', False)
 

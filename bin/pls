@@ -3,6 +3,9 @@ from _rfstools import arg_parser, arg_processor
 import logging
 
 import os.path
+import stat
+
+import texttable
 
 
 def get_instance():
@@ -16,39 +19,101 @@ def get_instance():
   p.add('-r', '--reverse', help="Reverse order while sorting. Not implemented yet.")
   p.add('--time-style', help="Eather standard, fulliso or timestamp. Not implemented yet.")
 
-  return arg_processor.init(p, "pls", ["prepend_dirname", "directory", "long_format", "sort", "reverse", "time_style"])
+  p.add('--dereference', action='store_true', help="Dereferences symlinks.")
+
+  return arg_processor.init(p, "pls", ["prepend_dirname", "directory", "long_format", "sort", "reverse", "time_style", "dereference"])
 
 printed = []
+
 
 def v_print(text):
   printed.append(text)
   print(text)
 
+
 def finalize_printing():
   logging.info('pls output:\n' + "\n".join(printed))
+
+
+table_rows = []
+
+def append_tableline(*args):
+  table_rows.append([*args])
+
+
+def finalize_table():
+  global table_rows
+
+  table = texttable.Texttable()
+  table.set_cols_align(['l', 'r', 'l', 'r', 'r', 'l', 'l'])
+  table.set_cols_valign(['t', 'i', 'i', 'i', 'i', 't', 't'])
+  table.set_deco(0)
+  
+  table.add_rows(table_rows, header=False)
+  table_rows = []
+  
+  v_print(table.draw())
+
+
+def make_fileline(path):
+  if ic.prepend_dirname:
+    output_filename = 'r:' + path
+  
+  else:
+    dirname, basename = os.path.split(path)
+    output_filename = basename
+ 
+  if ic.long_format:
+
+    if ic.dereference:
+      st = ic.connection.stat(path)
+    else:
+      st = ic.connection.lstat(path)
+
+    mode = st.st_mode
+    filemode = stat.filemode(mode)
+    
+    append_tableline(filemode, st.st_nlink, st.st_uid, st.st_gid, st.st_size, st.st_mtime, output_filename)
+  
+  else:
+    v_print(output_filename)
+
+def print_total_size(path):
+  v_print('total ?')
 
 def ls(path):
   logging.debug("Printing list output of remote file r:{}".format(path))
 
-  if ic.prepend_dirname:
-    if ic.directory:
-      output_list = ['r:' + path]
-
-    else:
-      output_list = ["r:{}".format(s) for s in ic.connection.xls(path)]
+  if ic.directory:
+    output_list = [path]
 
   else:
-    if ic.directory:
-      dirname, basename = os.path.split(path)
-      output_list = [basename]
-
-    else:
-      output_list = ic.connection.ls(path)
+    output_list = ic.connection.xls(path)
 
   for s in output_list:
-    v_print(s)
-    
-     
+    make_fileline(s)
+  
+  if ic.long_format:
+    if ic.connection.isdir(path):
+      print_total_size(path)
+
+    finalize_table()
+
+
+def split_dir_nondir():
+  nondirs = []
+  dirs = []
+
+  for f in ic.files:
+    if ic.connection.isdir(f.path):
+      dirs.append(f.path)
+
+    else:   
+      nondirs.append(f.path)
+
+  return dirs, nondirs
+
+
 try:
   with get_instance() as ic:
 
@@ -61,15 +126,7 @@ try:
         ls(f.path)
     
     else:
-      nondirs = []
-      dirs = []
-
-      for f in ic.files:
-        if ic.connection.isdir(f.path):
-          dirs.append(f.path)
-
-        else:   
-          nondirs.append(f.path)
+      dirs, nondirs = split_dir_nondir()
 
       for nondir in nondirs:
         ls(nondir)
@@ -77,12 +134,12 @@ try:
       for d in dirs:
         if ic.prepend_dirname:
           v_print('r:' + d + ':')
-          ls(d)
 
         else:
           dirname, basename = os.path.split(d)
           v_print(basename + ':')
-          ls(d)
+
+        ls(d)
 
 
 except Exception: 

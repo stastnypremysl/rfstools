@@ -30,7 +30,7 @@ default:
 test-tox:
   stage: test
   script: 
-    - apt install -y libc6 dos2unix file python3.7
+    - apt install -y libc6 dos2unix file
     - pip install tox
     - tox
 

@@ -6,3 +6,5 @@ rfslib
 Sphinx
 sphinxcontrib-napoleon
 twine
+texttable
+tox

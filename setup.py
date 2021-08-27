@@ -19,8 +19,10 @@ with open("README.md", "r", encoding="utf-8") as freadme, open("version.txt", "r
     package_dir={"": "src"},
     packages=['_rfstools'],
     install_requires=[
-      'rfslib>=1,<2',
-      'ConfigArgParse>=1.4.1,<2'
+      'rfslib>=2.1,<3',
+      'ConfigArgParse>=1.4.1,<2',
+      'texttable>=1.6.4,<2'
+      
     ],
     scripts=[*map(lambda x: 'bin/' + x, os.listdir('bin'))],
   )

@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+from _rfstools import arg_parser, arg_processor
+import logging
+
+
+def get_instance():
+  epilog = 'Tokens: %%s - total size of a file, %%g - group id of owner, %u - user id of owner'
+
+  p = arg_parser.oneplus_arg_parser(description='This command displays file status.\n '+ epilog)
+  p.add('-f', '--format', required=True, help=('Use the specified FORMAT instead of the default. Outputs a newline after each use of FORMAT.'))
+  return arg_processor.init(p, "pstat", ['format'])
+
+try:
+  with get_instance() as ic:
+
+    for f in ic.files:
+      if f.remote == False:
+        raise ValueError("A given file must be remote.")
+
+      st = ic.connection.lstat(f.path)
+      output = ic.format
+
+      output = output.replace(r'%s', str(st.st_size))
+      output = output.replace(r'%g', str(st.st_gid))
+      output = output.replace(r'%u', str(st.st_uid))
+
+      print(output)
+      
+
+except Exception: 
+  logging.exception("Fatal error. (returning 1)")
+  exit(1)
+ 
+logging.info("Finished succesfully. (returning 0)")
+exit(0)

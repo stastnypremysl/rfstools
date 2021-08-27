@@ -3,24 +3,7 @@ stages:
 - test
 - deploy
 
-# Official language image. Look for the different tagged releases at:
-# https://hub.docker.com/r/library/python/tags/
 image: debian:stable
-
-# Change pip's cache directory to be inside the project directory since we can
-# only cache local items.
-variables:
-  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
-
-# Pip's cache doesn't store the python packages
-# https://pip.pypa.io/en/stable/reference/pip_install/#caching
-#
-# If you want to also cache the installed packages, you have to install
-# them in a virtualenv and cache it as well.
-cache:
-  paths:
-    - .cache/pip
-    - venv/
 
 default:
   before_script:
@@ -47,7 +30,7 @@ default:
 test-tox:
   stage: test
   script: 
-    - apt install -y libc6 dos2unix
+    - apt install -y libc6 dos2unix file
     - pip install tox
     - tox
 
@@ -212,6 +195,12 @@ deploy-doc:
       apt install -y texlive-latex-recommended latexmk texlive-fonts-recommended texlive-latex-extra
 
       export doc_repo=/tmp/rfstools-docs
+      ./docs/generate-docs.sh
+
+      [ -n "$CI_COMMIT_TAG" ] && {
+        echo Sleeping for 30 seconds to prevent race condition.
+        sleep 30
+      }
 
       pushd /tmp
       git clone https://oauth2:${CI_DOCS_ACCESS_TOKEN}@git.profinit.eu/rfs/rfstools-docs/
@@ -221,7 +210,6 @@ deploy-doc:
       rm -fr ./commands ./rfstools-dev-doc.pdf 2>/dev/null || :
       popd
 
-      ./docs/generate-docs.sh
       cp -r docs/_build/commands $doc_repo
       cp docs/_build/latex/rfstools.pdf $doc_repo/rfstools-dev-doc.pdf
       cp docs/_build/README.md $doc_repo

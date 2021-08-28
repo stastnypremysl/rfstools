@@ -56,6 +56,10 @@ root_ls_test()(
   pls r:/
 )
 
+root_ls_l_test()(
+  pls -l r:/
+)
+
 mv_test()(
   l1_file=$(generate_file)
   l1_file_dup=$l1_file.dup
@@ -96,7 +100,7 @@ rm_test()(
  
 )
 
-for t in cp_test ls_test root_ls_test mv_test rm_test \
+for t in cp_test ls_test root_ls_test root_ls_l_test mv_test rm_test \
   touch_test exist_test; do
   
   run_test $t

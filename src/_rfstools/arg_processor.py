@@ -157,7 +157,8 @@ def __init_connection(args):
       port = args['port'], 
       tls = args['tls'], 
       passive_mode = args['passive_mode'],
-      connection_encoding=args['connection_encoding'])
+      connection_encoding = args['connection_encoding'],
+      dont_use_list_a = args['dont_use_list_a'])
 
   else:
     raise ValueError("Connection type {} is unknown.".format(c_type))

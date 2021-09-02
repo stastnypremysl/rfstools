@@ -44,7 +44,7 @@ def __autofill_missing_arguments(args):
 
   def default_nonexistent_arg(name, default):
     if not name in args or args[name] == None:
-      logging.debug("No {} is given. Defaulting to {}.".format(name, default))
+      logging.debug(f"No {name} is given. Defaulting to {default}.")
       args[name] = default
   
   default_nonexistent_arg('text_transmission', False)
@@ -78,8 +78,7 @@ def __validate_arguments(args):
 
   def check_arg_existence(name):
     if not name in args or args[name] == None:
-      error = "Connection type {} needs optional argument {}.".format(c_type, name)
-      raise ValueError(error)
+      raise ValueError(f"Connection type {c_type} needs optional argument {name}.")
 
   if not c_type == "FS":
     check_arg_existence('host')
@@ -190,7 +189,7 @@ def init(arg_parser, name, vars_to_pass):
 
   logging.basicConfig(format='%(asctime)s; {}; {}; %(message)s'.format(name, os.getpid()), level=log_level, **logging_config)
 
-  logging.info("Starting rfstools version {}".format(sys.version))
+  logging.info(f"Starting rfstools version {sys.version}.")
   logging.info( __anonymize_formatted_values(p.format_values()) )
    
   __autofill_missing_arguments(args)

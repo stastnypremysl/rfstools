@@ -95,7 +95,17 @@ def ls(path):
     output_list = ic.connection.xls(path)
 
     if not (ic.almost_all or ic.all):
-      output_list = [* filter(lambda x: x[0] != '.', output_list)]
+      logging.debug(f"Filtring hidden files.")
+
+      swap_list = []
+      
+      for el in output_list:
+        _, basename = os.path.split(el)
+
+        if basename[0] != '.':
+          swap_list.append(el)
+
+      output_list = swap_list
 
     elif ic.all:
       output_list.append('.')

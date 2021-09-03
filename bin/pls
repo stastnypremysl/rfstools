@@ -19,6 +19,9 @@ def get_instance():
   p.add('-r', '--reverse', help="Reverse order while sorting. Not implemented yet.")
   p.add('--time-style', help="Eather standard, fulliso or timestamp. Not implemented yet.")
 
+  a.add('-a', '--all', help='Show hidden files in listed folders including . and ..')
+  a.add('-A', '--almost-all', help='Show hidden files in listed folders excluding . and ..')
+
   p.add('--dereference', action='store_true', help="Dereferences symlinks.")
 
   return arg_processor.init(p, "pls", ["prepend_dirname", "directory", "long_format", "sort", "reverse", "time_style", "dereference"])
@@ -55,6 +58,7 @@ def finalize_table():
   v_print(table.draw())
 
 
+# In case of long_format returns size of file. Otherwise 0.
 def make_fileline(path):
   if ic.prepend_dirname:
     output_filename = 'r:' + path
@@ -74,15 +78,15 @@ def make_fileline(path):
     filemode = stat.filemode(mode)
     
     append_tableline(filemode, st.st_nlink, st.st_uid, st.st_gid, st.st_size, st.st_mtime, output_filename)
+
+    return st.st_size
   
   else:
     v_print(output_filename)
-
-def print_total_size(path):
-  v_print('total ?')
+    return 0
 
 def ls(path):
-  logging.debug("Printing list output of remote file r:{}".format(path))
+  logging.debug(f"Printing list output of remote file r:{path}.")
 
   if ic.directory:
     output_list = [path]
@@ -90,12 +94,14 @@ def ls(path):
   else:
     output_list = ic.connection.xls(path)
 
+  total_size = 0
+
   for s in output_list:
-    make_fileline(s)
+    total_size += make_fileline(s)
   
   if ic.long_format:
     if ic.connection.isdir(path):
-      print_total_size(path)
+      v_print(f'total {total_size}')
 
     finalize_table()
 

@@ -16,15 +16,15 @@ def get_instance():
   p.add('-l', '--long-format', action='store_true', help='Use long listing format. Not implemented yet.')
 
   p.add('--sort', help="Sort by time/size. eg. --sort=time. Not implemented yet.")
-  p.add('-r', '--reverse', help="Reverse order while sorting. Not implemented yet.")
+  p.add('-r', '--reverse', action='store_true', help="Reverse order while sorting. Not implemented yet.")
   p.add('--time-style', help="Eather standard, fulliso or timestamp. Not implemented yet.")
 
-  p.add('-a', '--all', help='Show hidden files in listed folders including . and ..')
-  p.add('-A', '--almost-all', help='Show hidden files in listed folders excluding . and ..')
+  p.add('-a', '--all', action='store_true', help='Show hidden files in listed folders including . and ..')
+  p.add('-A', '--almost-all', action='store_true', help='Show hidden files in listed folders excluding . and ..')
 
   p.add('--dereference', action='store_true', help="Dereferences symlinks.")
 
-  return arg_processor.init(p, "pls", ["prepend_dirname", "directory", "long_format", "sort", "reverse", "time_style", "dereference"])
+  return arg_processor.init(p, "pls", ["prepend_dirname", "directory", "long_format", "sort", "reverse", "time_style", "all", "almost_all", "dereference"])
 
 printed = []
 
@@ -94,6 +94,15 @@ def ls(path):
   else:
     output_list = ic.connection.xls(path)
 
+    if not (ic.almost_all or ic.all):
+      output_list = [* filter(lambda x: x[0] != '.', output_list)]
+
+    elif ic.all:
+      output_list.append('.')
+      output_list.append('..')
+
+    output_list.sort()
+
   total_size = 0
 
   for s in output_list:
@@ -125,7 +134,7 @@ try:
 
     for f in ic.files:
       if f.remote == False:
-        raise ValueError("A given file must be remote.")
+        raise ValueError(f"A given file {f.path} must be remote.")
 
     if len(ic.files) == 1 or ic.directory:
       for f in ic.files:

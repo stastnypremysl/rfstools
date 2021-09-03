@@ -19,8 +19,8 @@ def get_instance():
   p.add('-r', '--reverse', help="Reverse order while sorting. Not implemented yet.")
   p.add('--time-style', help="Eather standard, fulliso or timestamp. Not implemented yet.")
 
-  a.add('-a', '--all', help='Show hidden files in listed folders including . and ..')
-  a.add('-A', '--almost-all', help='Show hidden files in listed folders excluding . and ..')
+  p.add('-a', '--all', help='Show hidden files in listed folders including . and ..')
+  p.add('-A', '--almost-all', help='Show hidden files in listed folders excluding . and ..')
 
   p.add('--dereference', action='store_true', help="Dereferences symlinks.")
 

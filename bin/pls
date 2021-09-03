@@ -6,10 +6,11 @@ import os.path
 import stat
 
 import texttable
+import datetime
 
 
 def get_instance():
-  p = arg_parser.oneplus_arg_parser(description='This command list a given remote folder, or returns a file name, if it is not a folder.')
+  p = arg_parser.oneplus_arg_parser(description='This command list a given remote folder, or returns a file name, if it is not a folder. By default, no symlinks are dereferenced.')
 
   p.add('-p', '--prepend-dirname', action='store_true', help='Enables prepending dirnames (+ r:) to the output.')
   p.add('-d', '--directory', action='store_true', help='List directories themself, not their content.')
@@ -22,7 +23,7 @@ def get_instance():
   p.add('-a', '--all', action='store_true', help='Show hidden files in listed folders including . and ..')
   p.add('-A', '--almost-all', action='store_true', help='Show hidden files in listed folders excluding . and ..')
 
-  p.add('--dereference', action='store_true', help="Dereferences symlinks.")
+  p.add('--dereference', action='store_true', help="Dereferences symlinks. Not implemented yet.")
 
   return arg_processor.init(p, "pls", ["prepend_dirname", "directory", "long_format", "sort", "reverse", "time_style", "all", "almost_all", "dereference"])
 
@@ -77,7 +78,15 @@ def make_fileline(path):
     mode = st.st_mode
     filemode = stat.filemode(mode)
     
-    append_tableline(filemode, st.st_nlink, st.st_uid, st.st_gid, st.st_size, st.st_mtime, output_filename)
+    raw_time = datetime.datetime.utcfromtimestamp(st.st_mtime)
+    this_year = datetime.datetime(year = datetime.date.today().year, month = 1, day = 1)
+
+    if raw_time > this_year:
+      time = raw_time.strftime('%b %d %H:%M')
+    else:
+      time = raw_time.strftime('%b %d %Y')
+
+    append_tableline(filemode, st.st_nlink, st.st_uid, st.st_gid, st.st_size, time, output_filename)
 
     return st.st_size
   

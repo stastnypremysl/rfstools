@@ -1,4 +1,4 @@
-from rfslib import pglobber, pinstance, path_utils, abstract_pconnection
+from rfslib import pglobber, pinstance, path_utils, abstract_pconnection, pconnection_settings
 import logging
 
 import os, sys
@@ -23,7 +23,7 @@ def __anonymize_formatted_values(values):
   return "".join(ret)
 
 def __init_settings(args):
-  settings = abstract_pconnection.p_connection_settings()
+  settings = pconnection_settings()
 
   settings.direct_write = args['direct_write']
 

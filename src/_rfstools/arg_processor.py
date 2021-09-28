@@ -14,7 +14,7 @@ def __anonymize_formatted_values(values):
   ret.append(head)
   ret.append("\n")
 
-  t_regex = re.compile(r"(.*password.*:\s*).*", flags=re.IGNORECASE)
+  t_regex = re.compile(r"(.*password:\s*).*", flags=re.IGNORECASE)
 
   for l in tail:
     ret.append(t_regex.sub(r"\1******", l))

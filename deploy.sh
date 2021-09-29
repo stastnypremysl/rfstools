@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 git pull
 
 new_version=$(cat ./version.txt)

@@ -133,9 +133,12 @@ def __init_connection(args):
     from rfslib import smb23_pconnection
 
     smb23_pconnection.config_smb23(
+      username = args['username'],
+      password = args['password'],
       no_dfs = args['no_dfs'],
       disable_secure_negotiate = args['disable_secure_negotiate'],
-      dfs_domain_controller = args['dfs_domain_controller'])
+      dfs_domain_controller = args['dfs_domain_controller'],
+      auth_protocol = args['auth_protocol'])
 
     return smb23_pconnection.Smb23PConnection(settings, 
       host = args['host'], 

@@ -43,6 +43,8 @@ def default_arg_parser(description:str='') -> configargparse.ArgParser:
   ret.add('--dfs-domain-controller', help='The DFS domain controller address. Useful in case, when rfstools fails to find it themself. Applicable only for SMB23',
           env_var='RFSTOOLS_DFS_DOMAIN_CONTROLLER')
   ret.add('--dont-require-signing', help='Disables signing requirement. Applicable only for SMB23.', action='store_true', env_var='RFSTOOLS_DONT_REQUIRE_SIGNING')
+  ret.add('--auth-protocol', help="The protocol to use for authentication. Possible values are 'negotiate', 'ntlm' or 'kerberos'. Defaults to 'negotiate'. Applicable only for SMB23.", 
+          default='negotiate', env_var='RFSTOOLS_AUTH_PROTOCOL')
 
   ret.add('--tls', help='Activate TLS. Applicable only for FTP.', action='store_true', env_var='RFSTOOLS_TLS')
   ret.add('--tls-trust-chain', help='The trust chain file path for TLS. Applicable only for FTP.', action='store_true', env_var='RFSTOOLS_TLS_TRUST_CHAIN')

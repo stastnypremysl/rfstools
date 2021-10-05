@@ -19,7 +19,7 @@ with open("README.md", "r", encoding="utf-8") as freadme, open("version.txt", "r
     package_dir={"": "src"},
     packages=['_rfstools'],
     install_requires=[
-      'rfslib>=3.0.0,<4',
+      'rfslib>=3.1.0,<4',
       'ConfigArgParse>=1.4.1,<2',
       'texttable>=1.6.4,<2'
       

@@ -14,10 +14,31 @@ touch_test()(
 
 exist_test()(
   tmp=$(mktemp)
-  rtmp=$tmp.remote
   trap "rm $tmp" EXIT
 
-  ! pexist r:$rtmp || die "Exist tells, that nonexistent remote file exist."
+  t_fail_suffix(){
+    pexist r:$1 && die "Pexist tells, that nonexistent remote file exist."
+    ret=$?
+
+    if ! [ $ret = 2 ]; then
+      die "Pexist returns bad return code $ret instead of 2. Maybe, there is some fail."
+    fi
+  }
+  
+  t_fail_suffix '.remote'
+  t_fail_suffix 'rx*'
+  t_fail_suffix 'x?'
+  t_fail_suffix 'xxx[a-z][!aX]'
+  
+)
+
+no_name_exist_test()(
+  pexist r: && echo "Pexist tells, that no-name file exist."
+  ret=$?
+
+  if ! [ $ret = 2 ]; then
+    die "Pexist returns $ret instead of 2, when no-name file is given to it."
+  fi
 )
 
 cp_test()(
@@ -100,8 +121,8 @@ rm_test()(
  
 )
 
-for t in cp_test ls_test root_ls_test root_ls_l_test mv_test rm_test \
-  touch_test exist_test; do
+for t in exist_test no_name_exist_test touch_test  \
+  cp_test ls_test root_ls_test root_ls_l_test mv_test rm_test; do
   
   run_test $t
 done

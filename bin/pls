@@ -156,7 +156,10 @@ try:
       if f.remote == False:
         raise ValueError(f"A given file {f.path} must be remote.")
 
-    if len(ic.files) == 1 or ic.directory:
+    if len(ic.files) == 0:
+      pass
+
+    elif len(ic.files) == 1 or ic.directory:
       for f in ic.files:
         ls(f.path)
     

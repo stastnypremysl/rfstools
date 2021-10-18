@@ -5,12 +5,13 @@ from os import environ
 import sys
 
 
-def default_arg_parser(description:str='') -> configargparse.ArgParser:
+def default_arg_parser(description:str='', wildcard_skipper=False) -> configargparse.ArgParser:
   """A function, which is called in the beginning of all scripts in `bin`. 
      It generates a base parser sceleton, which is later altered by script itself.
 
      Args:
-       description: The script description. Basically what the script do.
+       description: The script description. Basically what the script does.
+       wildcard_skipper: Adds --ignore-failed-wildcards option.
 
      Returns:
        A base parser sceleton. 
@@ -70,10 +71,14 @@ def default_arg_parser(description:str='') -> configargparse.ArgParser:
   ret.add('--no-host-key-checking', env_var='RFSTOOLS_NO_HOST_KEY_CHECKING', action='store_true', default=False,
           help='Disables host SSH key knowledge requirements policy. Be aware, that using this option makes you volnerable to MITM attack. Applicable only for SFTP.')
 
+  if wildcard_skipper:
+    ret.add('-G', '--ignore-failed-wildcards', env_var='RFSTOOLS_IGNORE_FAILED_WILDCARDS', action='store_true', default=False,
+            help="When wildcard lookup fails in 'many-type' positional argument and the wildcard itself doesn't exist as a file, the wildcard will be skipped.")
+
   return ret
 
-def oneplus_arg_parser(description:str='') -> configargparse.ArgParser:
-  ret = default_arg_parser(description=description)
+def oneplus_arg_parser(description:str='', wildcard_skipper=False) -> configargparse.ArgParser:
+  ret = default_arg_parser(description=description, wildcard_skipper=wildcard_skipper)
   ret.add('files', nargs="+", help='File(s) to process. It may contain wildcards. Files must start with prefix r: - no other files than remote are supported.', metavar='FILE(S)')
     
   return ret
@@ -86,7 +91,8 @@ def one_arg_parser(description:str='') -> configargparse.ArgParser:
   return ret
 
 def many_to_one_arg_parser(description:str='') -> configargparse.ArgParser:
-  ret = default_arg_parser(description=description)
+  ret = default_arg_parser(description=description, wildcard_skipper=True)
+
   ret.add('source_files', nargs="+", help='Source file(s) to transmit. It may contain wildcards. Remote file(s) must start with prefix r:', metavar='SOURCE_FILE')
 
   ret.add('-t', '--target-folder', help='If target folder is specified, it will be used instead of DESTINATION FILE. DESTINATION FILE positional argument will be no longer parsed if used.', 

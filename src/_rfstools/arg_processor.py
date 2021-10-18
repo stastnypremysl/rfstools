@@ -228,6 +228,24 @@ def init(arg_parser, name, vars_to_pass):
 
     return path
   
+  def verify_existence(path):
+    if path_utils.is_remote(path):
+      path = path_utils.remove_r_prefix(path)
+
+      return ret.connection.exists(path)
+
+    else:
+      return os.path.exists(path)
+
+  def extend_wildcard_list(o_list, ext):
+    if args.get('ignore_failed_wildcards'):
+      
+      f_ext = filter(verify_existence, ext)
+      o_list.extend(f_ext)
+      
+    else:
+      o_list.extend(ext)
+
   def expand_wildcards(i_list):
     logging.debug("Expanding wildcards...")
 
@@ -240,10 +258,10 @@ def init(arg_parser, name, vars_to_pass):
         expanded = glob(wpath)
         expanded = map(path_utils.add_r_prefix, expanded)
 
-        o_list.extend(expanded)
+        extend_wildcard_list(o_list, expanded)
        
       else:
-        o_list.append(wpath)
+        extend_wildcard_list(o_list, [wpath])
 
     return o_list
   

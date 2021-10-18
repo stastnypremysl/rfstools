@@ -17,16 +17,16 @@ generate_file()(
 )
 
 print_test_start(){
-  printf "Starting test \e[1m$test\e[0m...\n"
+  printf "\nStarting test \e[1m$test\e[0m...\n"
 }
 
 print_test_fail(){
-  printf "\e[31mTEST $test FAILED\e[0m \n\n"
+  printf "\e[31mTEST $test FAILED\e[0m \n"
   exit 1
 }
 
 print_test_succeeded(){
-  printf "Test $test succeeded\n\n"
+  printf "Test $test succeeded\n"
   test=NAN
 }
 

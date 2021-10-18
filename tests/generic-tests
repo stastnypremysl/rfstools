@@ -89,6 +89,13 @@ failed_wildcard_ls_test()(
   exit 0
 )
 
+false_failed_wildcard_ls_test()(
+  tmp=$(mktemp)
+  rm $tmp
+
+  pls -G r:$tmp* || die "pls shouldn't have failed - nonexistent file should have been ignored."
+)
+
 mv_test()(
   l1_file=$(generate_file)
   l1_file_dup=$l1_file.dup
@@ -130,7 +137,7 @@ rm_test()(
 )
 
 for t in exist_test no_name_exist_test touch_test  \
-  ls_test root_ls_test root_ls_l_test failed_wildcard_ls_test \
+  ls_test root_ls_test root_ls_l_test failed_wildcard_ls_test false_failed_wildcard_ls_test \
   cp_test mv_test rm_test; do
   
   run_test $t

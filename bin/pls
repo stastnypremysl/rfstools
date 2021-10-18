@@ -155,6 +155,9 @@ try:
     for f in ic.files:
       if f.remote == False:
         raise ValueError(f"A given file {f.path} must be remote.")
+      
+      if not ic.connection.exists(f.path):
+        raise ValueError(f"A given file {f.path} doesn't exist.")
 
     if len(ic.files) == 0:
       pass

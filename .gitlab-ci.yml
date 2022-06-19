@@ -1,6 +1,5 @@
 stages:
-- build
-- test
+- examine
 - deploy
 
 image: debian:stable
@@ -28,14 +27,14 @@ default:
       EOF
 
 test-tox:
-  stage: test
+  stage: examine
   script: 
     - apt install -y libc6 dos2unix file
     - pip install tox
     - tox
 
 test-fs:
-  stage: test
+  stage: examine
   script:
     - pip install .
 
@@ -43,7 +42,7 @@ test-fs:
     - ./tests/generic-tests
 
 test-sftp:
-  stage: test
+  stage: examine
   script:
     - pip install .
 
@@ -63,7 +62,7 @@ test-sftp:
 
   
 test-smb12:
-  stage: test
+  stage: examine
   script:
     - pip install .
 
@@ -90,7 +89,7 @@ test-smb12:
 
 
 test-smb23:
-  stage: test
+  stage: examine
   script:
     - pip install .
 
@@ -124,7 +123,7 @@ test-smb23:
 
 
 test-ftp:
-  stage: test
+  stage: examine
   script:
     - pip install .
 
@@ -145,7 +144,7 @@ test-ftp:
 
 
 build:
-  stage: build
+  stage: examine
   script:
     - python setup.py sdist bdist_wheel
     # an alternative approach is to install and run:
@@ -233,15 +232,23 @@ deploy-doc:
     expire_in: 4 weeks
       
 
-# pages:
- # stage: build
- # script:
- #   - pip install sphinx sphinx-rtd-theme
- #   - cd doc ; make html
- #   - mv build/html/ ../public/
- # artifacts:
- #   paths:
- #     - public
- # rules:
- #   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+include:
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml
+  - template: Security/Dependency-Scanning.gitlab-ci.yml
+
+
+sast:
+  stage: examine
+  before_script: []
+
+secret_detection:
+  stage: examine
+  before_script: []
+
+dependency_scanning:
+  stage: examine
+  before_script: []
+
 

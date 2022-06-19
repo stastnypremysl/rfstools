@@ -4,7 +4,7 @@ This package provides you executables `pcp`, `pls`, `pmv`,..., which enables you
 
 Furthermore you can enable data reencoding during data transfer (CRLF/LF and character reencoding). 
 
-In future, it should be possible to do atomical transaction transfers between many hosts so you are sure, that after failure (eg. connection loss), no change is made on any host.
+*Warning: This package is still under heavy development and the API may change.*
 
 ## Examples
 In further subchapters, there are examples of solving some of basic tasks using this tool. Only the first chapter contains the configuration file setup...in the others it can be done analogically.

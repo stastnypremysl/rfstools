@@ -17,11 +17,16 @@ with open("README.md", "r", encoding="utf-8") as freadme, open("version.txt", "r
     author_email='p-w@stty.cz',
     url='https://git.profinit.eu/pstastny/rfstools',
     package_dir={"": "src"},
-    packages=['_rfstools'],
+    packages=['_rfstools','rfslib'],
     install_requires=[
-      'rfslib>=3.1.8,<4',
       'ConfigArgParse>=1.4.1,<2',
-      'texttable>=1.6.4,<2'
+      'texttable>=1.6.4,<2',
+
+      # rfslib dependencies
+      'pysmb>=1.2.7,<2',
+      'paramiko>=2.7.2,<3',
+      'smbprotocol>=1.6.1,<2',
+      'ftputil>=5.0.1,<6'
       
     ],
     scripts=[*map(lambda x: 'bin/' + x, os.listdir('bin'))],

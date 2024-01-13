@@ -8,23 +8,14 @@ default:
   before_script:
     - apt update -y
     - apt dist-upgrade -y
-    - apt install -y python3-pip git
+    - apt install -y python3-pip python3-virtualenv git
 
-    - pip3 install --user -U virtualenv pip
     - export PATH=~/.local/bin:$PATH
     
     - virtualenv ~/venv
     - source ~/venv/bin/activate
 
-    - pip install -U pip
 
-    - mkdir -p ~/.pip
-    - |
-      cat > ~/.pip/pip.conf <<EOF
-      [global]
-      extra-index-url = https://rfstools-worker:${CI_RFSTOOLS_WORKER_TOKEN}@git.profinit.eu/api/v4/projects/552/packages/pypi/simple
-
-      EOF
 
 test-tox:
   stage: examine

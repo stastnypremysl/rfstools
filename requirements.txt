@@ -2,7 +2,6 @@ pyparsing
 ConfigArgParse
 paramiko
 pysmb
-rfslib
 Sphinx
 sphinxcontrib-napoleon
 twine

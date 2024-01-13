@@ -17,6 +17,80 @@ If you want to create a new pdf documentation, you are required to install also 
    :maxdepth: 4
    :caption: Contents:
 
+\rfslib module
+------------------------------------
+
+.. automodule:: rfslib
+   :members:
+   :undoc-members:
+   :imported-members:
+   :show-inheritance:
+   :inherited-members:
+
+
+
+\rfslib.abstract\_pconnection module
+------------------------------------
+
+.. automodule:: rfslib.abstract_pconnection
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :inherited-members:
+
+
+\rfslib.sftp\_pconnection module
+--------------------------------
+
+.. automodule:: rfslib.sftp_pconnection
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :inherited-members:
+
+\rfslib.ftp\_pconnection module
+-------------------------------
+
+.. automodule:: rfslib.ftp_pconnection
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :inherited-members:
+
+\rfslib.smb12\_pconnection module
+---------------------------------
+
+.. automodule:: rfslib.smb12_pconnection
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :inherited-members:
+
+\rfslib.smb23\_pconnection module
+---------------------------------
+
+.. automodule:: rfslib.smb23_pconnection
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :inherited-members:
+
+\rfslib.fs\_pconnection module
+---------------------------------
+
+.. automodule:: rfslib.fs_pconnection
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :inherited-members:
+
+\rfslib.path\_utils module
+---------------------------------
+.. automodule:: rfslib.path_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 
 
 \_rfstools.arg\_parser module

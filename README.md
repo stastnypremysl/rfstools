@@ -6,7 +6,7 @@ Furthermore, you can enable data re-encoding during data transfer (CRLF/LF and c
 
 
 ## Installation
-The `rfstools` tool can be installed using `pip` from the PyPI public registry.
+The `rfstools` tool can be installed using `pip` from [the PyPI public registry](https://pypi.org/project/rfstools/).
 
     pip install rfstools
 

@@ -24,7 +24,7 @@ with open("README.md", "r", encoding="utf-8") as freadme, open("version.txt", "r
 
       # rfslib dependencies
       'pysmb>=1.2.7,<2',
-      'paramiko>=2.7.2,<3',
+      'paramiko>=2.7.2,<4',
       'smbprotocol>=1.6.1,<2',
       'ftputil>=5.0.1,<6'
       
